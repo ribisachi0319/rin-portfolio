@@ -1,0 +1,164 @@
+---
+// Dòng danh sách đánh số ("v2 / Index Row"). Hover: nền xanh bo góc hiện vào, chữ đảo màu, mũi tên xoay.
+interface Props {
+	no: string;
+	title: string;
+	desc: string;
+	href: string;
+	tone?: 'light' | 'dark';
+	external?: boolean;
+}
+
+const { no, title, desc, href, tone = 'light', external = false } = Astro.props;
+---
+
+<a
+	class:list={['index-row', `index-row--${tone}`]}
+	href={href}
+	data-reveal
+	{...(external && { target: '_blank', rel: 'noopener' })}
+>
+	<span class="no">{no}</span>
+	<span class="title">{title}</span>
+	<span class="desc">{desc}</span>
+	<span class="arrow" aria-hidden="true">
+		↗
+	</span>
+</a>
+
+<style>
+	.index-row {
+		--fg: var(--color-brand-blue-deep);
+		--fg-muted: var(--color-brand-blue-deep);
+
+		position: relative;
+		display: flex;
+		align-items: center;
+		gap: 24px;
+		padding: 32px 0;
+		border-top: 1px solid var(--color-v2-accent);
+		color: var(--fg);
+		isolation: isolate;
+		transition:
+			padding 0.4s var(--ease-in-out),
+			color 0.4s var(--ease-in-out);
+	}
+
+	.index-row--dark {
+		--fg: var(--color-v2-on-dark);
+		--fg-muted: var(--color-v2-on-dark-muted);
+	}
+
+	/* Nền hover: phủ cả viền trên để viền không lộ ra ở góc bo */
+	.index-row::before {
+		content: '';
+		position: absolute;
+		inset: -1px 0 0;
+		z-index: -1;
+		border-radius: 20px;
+		background: var(--color-v2-accent);
+		opacity: 0;
+		transform: scaleY(0.85);
+		transition:
+			opacity 0.4s var(--ease-in-out),
+			transform 0.4s var(--ease-in-out);
+	}
+
+	.index-row:hover,
+	.index-row:focus-visible {
+		--fg: var(--color-v2-on-dark);
+		--fg-muted: var(--color-v2-on-dark-muted);
+		padding-inline: 32px;
+	}
+
+	.index-row:hover::before,
+	.index-row:focus-visible::before {
+		opacity: 1;
+		transform: none;
+	}
+
+	.no {
+		flex: none;
+		width: 96px;
+		font-size: 14px;
+		line-height: 24px;
+		font-weight: 500;
+		color: var(--fg-muted);
+	}
+
+	.title {
+		flex: 1 1 0;
+		min-width: 0;
+		font-size: 40px;
+		line-height: 48px;
+		font-weight: 600;
+		letter-spacing: -0.03em;
+	}
+
+	.index-row--dark .title {
+		font-size: 32px;
+	}
+
+	.desc {
+		flex: none;
+		width: 360px;
+		font-size: 16px;
+		line-height: 32px;
+		letter-spacing: -0.002em;
+		color: var(--fg-muted);
+	}
+
+	.arrow {
+		flex: none;
+		font-size: 32px;
+		line-height: 48px;
+		font-weight: 600;
+		transition: transform 0.4s var(--ease-in-out);
+	}
+
+	.index-row:hover .arrow,
+	.index-row:focus-visible .arrow {
+		transform: rotate(45deg);
+	}
+
+	.no,
+	.desc {
+		transition: color 0.4s var(--ease-in-out);
+	}
+
+	@media (max-width: 900px) {
+		.index-row {
+			flex-wrap: wrap;
+			gap: 8px 16px;
+		}
+
+		.no {
+			width: auto;
+		}
+
+		.title {
+			flex-basis: calc(100% - 80px);
+			font-size: 28px;
+			line-height: 36px;
+		}
+
+		.index-row--dark .title {
+			font-size: 24px;
+		}
+
+		.desc {
+			width: 100%;
+		}
+
+		.arrow {
+			position: absolute;
+			top: 24px;
+			right: 0;
+		}
+
+		.index-row:hover .arrow,
+		.index-row:focus-visible .arrow {
+			right: 32px;
+		}
+	}
+</style>

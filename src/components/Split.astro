@@ -1,0 +1,45 @@
+---
+/*
+ * Tách chữ thành từng mảnh để làm hiệu ứng hiện dần (ký tự hoặc từ).
+ * Tách lúc build, theo grapheme (Intl.Segmenter) nên dấu tiếng Việt không bị rời khỏi chữ.
+ * Chế độ "char": trình đọc màn hình đọc bản sr-only liền mạch, bản tách thì aria-hidden.
+ */
+import type { HTMLTag } from 'astro/types';
+
+interface Props {
+	as?: HTMLTag;
+	mode?: 'char' | 'word';
+	class?: string;
+	delay?: number;
+	[key: string]: unknown;
+}
+
+const { as: Tag = 'p', mode = 'word', class: className, delay, ...rest } = Astro.props;
+const html = (await Astro.slots.render('default')).trim();
+
+const graphemes = new Intl.Segmenter('vi', { granularity: 'grapheme' });
+
+function splitText(text: string) {
+	if (mode === 'char') {
+		return Array.from(graphemes.segment(text), ({ segment }) =>
+			/\s/.test(segment) ? segment : `<span class="sp">${segment}</span>`,
+		).join('');
+	}
+	return text.replace(/[^\s]+/g, (word) => `<span class="sp">${word}</span>`);
+}
+
+// Chỉ tách phần chữ nằm giữa các thẻ, giữ nguyên thẻ (span, em, br…)
+const split = html.replace(/(^|>)([^<]+)(?=<|$)/g, (_, open, text) => open + splitText(text));
+const plain = html.replace(/<[^>]+>/g, '');
+---
+
+<Tag class={className} data-split={mode} data-delay={delay} {...rest}>
+	{mode === 'char' ? (
+		<>
+			<span class="sr-only">{plain}</span>
+			<span aria-hidden="true" set:html={split} />
+		</>
+	) : (
+		<Fragment set:html={split} />
+	)}
+</Tag>

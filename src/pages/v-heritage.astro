@@ -1,0 +1,1173 @@
+---
+import Base from '../layouts/Base.astro';
+import Split from '../components/Split.astro';
+import RollLink from '../components/RollLink.astro';
+import RollButton from '../components/RollButton.astro';
+import IndexRow from '../components/IndexRow.astro';
+import Media from '../components/Media.astro';
+import { EMAIL, USER_FLOW_URL, UI_DESIGN_URL } from '../data/links';
+
+const base = import.meta.env.BASE_URL;
+const home = `${base}/`;
+
+const steps = [
+	['01', 'Idea', 'Hình thành ý tưởng và xác định vấn đề cần giải quyết.', 'idea'],
+	['02', 'Competitive Analysis', 'Nghiên cứu và phân tích các ứng dụng tương tự trên thị trường.', 'competitive'],
+	['03', 'User Research', 'Khảo sát người dùng, tìm hiểu nhu cầu, hành vi và khó khăn.', 'research'],
+	['04', 'User Persona', 'Xây dựng chân dung người dùng mục tiêu dựa trên kết quả nghiên cứu.', 'persona'],
+	['05', 'User Flow', 'Xây dựng luồng thao tác và các bước người dùng cần thực hiện.', 'user-flow'],
+	['06', 'Wireframe', 'Phác thảo cấu trúc, bố cục và chức năng của từng màn hình.', 'user-flow'],
+	['07', 'Design System', 'Thư viện thiết kế gồm màu sắc, kiểu chữ, hiệu ứng.', 'design-system'],
+	['08', 'UI Design', 'Thiết kế giao diện và các thành phần UI.', 'user-flow'],
+	['09', 'Prototype', 'Kết nối màn hình, mô phỏng trải nghiệm thực tế.', 'user-flow'],
+];
+
+const highlights = [
+	'Ứng dụng tham quan bảo tàng và di tích lịch sử tích hợp công nghệ AR.',
+	'Cho phép tương tác với mô hình 3D, khám phá chi tiết và tìm hiểu giá trị của hiện vật.',
+	'Cung cấp Audio Guide, lưu hiện vật yêu thích và chia sẻ trải nghiệm tham quan.',
+	'Hỗ trợ các đơn vị quản lý số hóa hiện vật và tối ưu hóa trải nghiệm du khách.',
+];
+
+const ideaPoints = [
+	'Xuất phát từ trải nghiệm thực tế khi tham quan bảo tàng, nơi việc tìm hiểu sâu về các hiện vật còn gặp nhiều hạn chế.',
+	'Khách tham quan thường phải tập trung đọc thông tin trên các biển thuyết minh, đặc biệt bất tiện khi không gian đông đúc.',
+	'Mong muốn tạo ra một phương thức khám phá hiện vật trực quan, sinh động và thuận tiện hơn.',
+	'Ứng dụng công nghệ AR mang đến trải nghiệm tương tác, giúp người dùng tiếp cận gần hơn với giá trị văn hóa và lịch sử.',
+];
+
+const segments = [
+	{
+		kicker: '12 – 30 tuổi',
+		name: 'Gen Z',
+		desc: 'Dễ chán vì nội dung lặp lại, mô tả dài, khô khan. Vẫn muốn hiểu câu chuyện sau hiện vật, sẵn sàng thử AR và thích chia sẻ.',
+		insight: 'Tối giản, nội dung ngắn gọn, mô hình 3D và camera AR.',
+	},
+	{
+		kicker: 'Tự tham quan',
+		name: 'Khách du lịch',
+		desc: 'Dễ bỏ qua hiện vật vì thiếu bối cảnh. Hứng thú với AR phục dựng nhưng lo về độ chính xác.',
+		insight: '"Quét là biết" với AR được bảo tàng xác minh, audio guide đa ngôn ngữ.',
+	},
+	{
+		kicker: 'Trên 45 tuổi',
+		name: 'Người lớn tuổi',
+		desc: 'Khó đọc chữ nhỏ khi thiếu sáng, dễ mệt khi đứng lâu, ngại ứng dụng phức tạp. Muốn nghe thuyết minh và dùng giọng nói.',
+		insight: 'Chữ lớn, tương phản cao, nút rõ ràng, audio "có hồn" và trợ lý ảo.',
+	},
+];
+
+const stats = [
+	['42,9%', 'Gamification'],
+	['39,8%', 'Audio storytelling'],
+	['58,2%', 'Cần chế độ offline'],
+	['46,9%', 'Không muốn quảng cáo làm phiền'],
+	['41,8%', 'Cập nhật nội dung mới'],
+];
+
+const personaBlocks = [
+	{
+		title: 'Mục tiêu & mong muốn',
+		items: [
+			'Thông tin đúng và đủ hơn giao diện bóng bẩy',
+			'Hiểu câu chuyện và ý nghĩa của hiện vật',
+			'Quét nhanh để ra thông tin ngay',
+			'Giá dễ tiếp cận, có bản miễn phí',
+		],
+	},
+	{
+		title: 'Pain points',
+		items: [
+			'Phải rời mắt khỏi hiện vật để tra Google',
+			'Bỏ qua hiện vật vì không hiểu',
+			'Rào cản ngôn ngữ khi tham quan',
+			'Lo phục dựng AR không chính xác',
+		],
+	},
+	{
+		title: 'Hành vi',
+		items: [
+			'Tìm hiểu qua Google và MXH trước chuyến đi',
+			'Chưa dùng app hỗ trợ tham quan',
+			'Sẵn sàng dùng app thuyết minh xuyên suốt',
+			'Ưu tiên nội dung hơn tính năng',
+		],
+	},
+];
+
+// Màu của chính app V-Heritage (nội dung minh hoạ), không phải token của portfolio
+const swatches = [
+	{ name: 'Navy', hex: '#304574', role: 'Chủ đạo', fg: 'var(--color-v2-on-dark)' },
+	{ name: 'Cam', hex: '#ED8927', role: 'Điểm nhấn', fg: 'var(--color-v2-ink-darkest)' },
+	{ name: 'Trắng', hex: '#FFFFFF', role: 'Nền', fg: 'var(--color-v2-ink)', border: true },
+	{ name: 'Xanh sáng', hex: '#5F8AEC', role: 'Công nghệ · AR', fg: 'var(--color-v2-ink-darkest)' },
+	{ name: 'Be', hex: '#EFDEC4', role: 'Giấy cổ · di sản', fg: 'var(--color-v2-ink)', border: true },
+];
+
+const gridSpecs = [
+	['4', 'cột'],
+	['20px', 'lề'],
+	['4px', 'lưới dòng'],
+	['44px', 'header'],
+	['34px', 'footer'],
+];
+---
+
+<Base
+	title="V-Heritage — Case study | Thanh Tuyền"
+	description="V-Heritage: ứng dụng tham quan bảo tàng và di tích lịch sử tích hợp công nghệ AR. Case study UX/UI của Thanh Tuyền."
+>
+	<header class="cs-header-bar">
+		<div class="wrap cs-header" data-reveal="down" data-delay="0">
+			<RollLink href={home} label="← Trang chủ" class="back" />
+			<a class="logo" href={home}>
+				<span class="logo-kicker">PORTFOLIO</span>
+				<span class="logo-name">THANH TUYỀN</span>
+			</a>
+		</div>
+	</header>
+
+	<main>
+		<section class="cs-hero">
+			<div class="wrap">
+				<div class="hero-meta" data-reveal="meta" data-delay="0.1">
+					<span>Study Project</span>
+					<span>07/2026 - 10/2026</span>
+				</div>
+				<Split as="h1" mode="char" class="cs-title" delay={0.2}>
+					V-Heritage<span class="serif-italic">.</span>
+				</Split>
+				<Split class="cs-subtitle" delay={0.8}>
+					Ứng dụng tham quan bảo tàng và di tích lịch sử tích hợp công nghệ AR.
+				</Split>
+				<dl class="cs-meta">
+					<div data-reveal="meta" data-delay="1.1">
+						<dt>Nền tảng</dt>
+						<dd>Mobile App · iOS/ Android</dd>
+					</div>
+					<div data-reveal="meta" data-delay="1.18">
+						<dt>Công nghệ</dt>
+						<dd>AR · 3D · Audio Guide</dd>
+					</div>
+					<div data-reveal="meta" data-delay="1.26">
+						<dt>Công cụ</dt>
+						<dd>Figma</dd>
+					</div>
+				</dl>
+				<Media label="Ảnh cover V-Heritage" class="cover" data-reveal="media" data-delay="1.3" />
+			</div>
+		</section>
+
+		<section class="section overview">
+			<div class="wrap split">
+				<div class="aside">
+					<h2 class="aside-label" data-reveal="label">
+						Tổng quan
+					</h2>
+				</div>
+				<div class="main stack-40">
+					<Split class="statement">
+						Biến mỗi hiện vật thành một câu chuyện có thể{' '}
+						<span class="serif-italic accent-serif">chạm, xoay và lắng nghe.</span>
+					</Split>
+					<ol class="highlights">
+						{highlights.map((text, i) => (
+							<li class="highlight" data-reveal>
+								<span class="num">{String(i + 1).padStart(2, '0')}</span>
+								<span>{text}</span>
+							</li>
+						))}
+					</ol>
+				</div>
+			</div>
+		</section>
+
+		<section class="section process on-dark">
+			<div class="wrap split">
+				<div class="aside">
+					<h2 class="aside-label" data-reveal="label">
+						Quy trình
+					</h2>
+				</div>
+				<div class="main">
+					{steps.map(([no, title, desc, target]) => (
+						<IndexRow no={no} title={title} desc={desc} href={`#${target}`} tone="dark" />
+					))}
+				</div>
+			</div>
+		</section>
+
+		<section class="section idea" id="idea">
+			<div class="wrap split">
+				<div class="aside">
+					<h2 class="aside-label" data-reveal="label">
+						01 | Ý tưởng
+					</h2>
+					<Media label="Màn hình quét hiện vật" class="idea-media" data-reveal="media" />
+				</div>
+				<div class="main stack-40">
+					<Split class="idea-statement">
+						Khách tham quan phải <span class="serif-italic accent-serif">rời mắt khỏi hiện vật</span> để đọc biển thuyết
+						minh,
+						<br />
+						nhất là khi bảo tàng đông người.
+					</Split>
+					<ol class="points" data-reveal>
+						{ideaPoints.map((text, i) => (
+							<li>
+								<span class="num">{String(i + 1).padStart(2, '0')}</span>
+								<span>{text}</span>
+							</li>
+						))}
+					</ol>
+				</div>
+			</div>
+		</section>
+
+		<section class="section competitive on-dark" id="competitive">
+			<div class="wrap split">
+				<div class="aside">
+					<h2 class="aside-label" data-reveal="label">
+						02 | Phân tích thị trường
+					</h2>
+				</div>
+				<div class="main stack-40">
+					<p class="body-l" data-reveal="label">
+						Thị trường du lịch Việt Nam đang tăng trưởng mạnh sau đại dịch, kéo theo làn sóng du lịch thông minh với AI
+						và AR/VR. Dù vậy, phần lớn ứng dụng hiện nay mới chỉ dừng ở khâu đặt vé, tra cứu hay gợi ý điểm đến, nhưng
+						câu chuyện trải nghiệm ngay tại điểm tham quan vẫn là một khoảng trống.
+					</p>
+					<div class="ca-cards">
+						<div class="ca-card ca-card--solution" data-reveal>
+							<p class="ca-label">Giải pháp</p>
+							<p class="ca-text">
+								AR kết hợp storytelling: du khách có hành trình sinh động, giàu tương tác; bảo tàng thấu hiểu khách qua
+								dữ liệu hành vi và dễ vận hành nội dung.
+							</p>
+						</div>
+						<div class="ca-card ca-card--challenge" data-reveal>
+							<p class="ca-label">Thách thức</p>
+							<p class="ca-text">
+								Quy trình phê duyệt kéo dài
+								<br />
+								Chi phí số hóa 3D cao
+								<br />
+								Tính năng AR phải ổn định trên nhiều dòng máy.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="section qual" id="research">
+			<div class="wrap split">
+				<div class="aside">
+					<h2 class="aside-label" data-reveal="label">
+						03 | Nghiên cứu định tính
+					</h2>
+				</div>
+				<div class="main segments">
+					{segments.map((s) => (
+						<div class="segment" data-reveal>
+							<div class="segment-head">
+								<p class="segment-kicker">{s.kicker}</p>
+								<h3 class="segment-name">{s.name}</h3>
+							</div>
+							<p class="segment-desc">{s.desc}</p>
+							<div class="insight">
+								<p class="insight-label">Hướng giải quyết</p>
+								<p>{s.insight}</p>
+							</div>
+						</div>
+					))}
+				</div>
+			</div>
+		</section>
+
+		<section class="section quant on-dark" id="research-quant">
+			<div class="wrap split">
+				<div class="aside">
+					<h2 class="aside-label" data-reveal="label">
+						03 | Nghiên cứu định lượng
+					</h2>
+				</div>
+				<div class="main stack-40">
+					<div class="hero-stat">
+						<Split mode="char" class="big-number">
+							77,6%
+						</Split>
+						<p class="hero-stat-caption" data-reveal="label">
+							chọn AR 3D là tính năng mong đợi nhất:{' '}
+							<strong>
+								<em>xoay, phóng to và khám phá chi tiết ẩn của hiện vật.</em>
+							</strong>
+						</p>
+					</div>
+					<ul class="stats">
+						{stats.map(([value, label]) => (
+							<li class="stat" data-reveal>
+								<span class="stat-value">{value}</span>
+								<span class="stat-label">{label}</span>
+							</li>
+						))}
+					</ul>
+					<p class="takeaway" data-reveal="label">
+						→ AR 3D là tính năng cốt lõi, kết hợp audio kể chuyện và gamification để giữ chân người dùng.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="section persona" id="persona">
+			<div class="wrap">
+				<div class="split">
+					<div class="aside">
+						<h2 class="aside-label" data-reveal="label">
+							04 | User Persona
+							<br />
+							(Chân dung người dùng)
+						</h2>
+					</div>
+					<div class="main persona-main">
+						<div class="identity" data-reveal>
+							<Media label="Avatar" class="avatar" />
+							<div>
+								<h3 class="persona-name">Đỗ Đức Mạnh</h3>
+								<p class="persona-meta">29 tuổi · Hà Nội · Nhân viên văn phòng</p>
+							</div>
+						</div>
+						<Split as="blockquote" class="quote">
+							“Chuyến tham quan chỉ có giá trị khi hiểu được câu chuyện đằng sau chứ không chỉ nhìn ngắm bề ngoài.”
+						</Split>
+					</div>
+				</div>
+				<div class="persona-grid">
+					{personaBlocks.map((block) => (
+						<div class="persona-block" data-reveal>
+							<h3 class="persona-block-title">{block.title}</h3>
+							<ul>
+								{block.items.map((item) => (
+									<li>{item}</li>
+								))}
+							</ul>
+						</div>
+					))}
+				</div>
+			</div>
+		</section>
+
+		<section class="section ds" id="design-system">
+			<div class="wrap split">
+				<div class="aside">
+					<h2 class="aside-label" data-reveal="label">
+						07 | Design System
+					</h2>
+				</div>
+				<div class="main stack-40">
+					<ul class="swatches">
+						{swatches.map((s) => (
+							<li
+								class:list={['swatch', { 'swatch--border': s.border }]}
+								style={`background:${s.hex};color:${s.fg}`}
+								data-reveal
+							>
+								<span class="swatch-name">{s.name}</span>
+								<span class="swatch-hex">{s.hex}</span>
+								<span class="swatch-role">{s.role}</span>
+							</li>
+						))}
+					</ul>
+					<p class="body-l" data-reveal="label">
+						Màu Navy #304574 gợi sự tin cậy, trầm tĩnh, trang nghiêm; cam #ED8927 thu hút vào hành động chính. Chữ trắng
+						trên nền navy đạt chuẩn WCAG AAA dễ đọc cho người lớn tuổi và trong điều kiện ánh sáng yếu của bảo tàng.
+					</p>
+					<div class="fonts">
+						<div class="font-card" data-reveal>
+							<p class="font-role">Display · Heading</p>
+							<p class="font-sample literata" aria-hidden="true">
+								Aa
+							</p>
+							<p class="font-name literata">Literata</p>
+							<p class="font-desc">
+								Phông có chân, từ “literatus” nghĩa là người uyên bác. Cổ điển như trang sách lịch sử.
+							</p>
+						</div>
+						<div class="font-card" data-reveal>
+							<p class="font-role">Title · Body · Button · Label</p>
+							<p class="font-sample bvp" aria-hidden="true">
+								Aa
+							</p>
+							<p class="font-name bvp">Be Vietnam Pro</p>
+							<p class="font-desc">Thiết kế riêng cho tiếng Việt với dấu chuẩn xác, dễ đọc ở cỡ lớn.</p>
+						</div>
+					</div>
+					<ul class="specs">
+						{gridSpecs.map(([value, label]) => (
+							<li class="spec" data-reveal>
+								<span class="spec-value">{value}</span>
+								<span class="spec-label">{label}</span>
+							</li>
+						))}
+					</ul>
+				</div>
+			</div>
+		</section>
+
+		<section class="section user-flow" id="user-flow">
+			<div class="wrap">
+				<div class="split">
+					<div class="aside">
+						<h2 class="aside-label" data-reveal="label">
+							05 · 08 · 09 |<br />
+							User Flow · UI Design · Prototype
+						</h2>
+					</div>
+					<div class="main stack-40">
+						<p class="body-l" data-reveal="label">
+							Hành trình B2C bắt đầu từ onboarding: hệ thống tự gợi ý chế độ trợ năng cho người trên 45 tuổi và đề xuất
+							tải gói dữ liệu khi phát hiện người dùng đang ở bảo tàng. Tại hiện vật, AI nhận diện và hiển thị mô hình
+							AR 3D, audio guide, chụp ảnh, lưu trữ và để lại lời nhắn. Khi quét thất bại: quét QR, tìm theo tên hoặc
+							xem ngoại tuyến.
+						</p>
+						<div class="cta-row">
+							<div data-reveal>
+								<RollButton href={USER_FLOW_URL} label="Xem User Flow" variant="dark" external />
+							</div>
+							<div data-reveal>
+								<RollButton href={UI_DESIGN_URL} label="Xem UI Design" variant="light" external />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="ui-shots">
+					<Media label="Màn hình Onboarding" class="ui-shot" data-reveal="media" />
+					<Media label="Màn hình quét AR" class="ui-shot" data-reveal="media" />
+					<Media label="Màn hình Audio Guide" class="ui-shot" data-reveal="media" />
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="footer">
+		<div class="wrap footer-inner">
+			<div class="footer-main">
+				<Split class="footer-statement">Quay lại trang chủ?</Split>
+				<div class="footer-ctas">
+					<div data-reveal>
+						<RollLink href={`mailto:${EMAIL}`} label={EMAIL} theme="dark" />
+					</div>
+					<div data-reveal>
+						<RollButton href={home} label="Về trang chủ" variant="accent" />
+					</div>
+				</div>
+			</div>
+			<p class="copyright" data-reveal>
+				© 2026 Rin
+			</p>
+		</div>
+		<Split as="p" mode="char" class="giant" aria-hidden="true">
+			PORTFOLIO
+		</Split>
+	</footer>
+</Base>
+
+<style>
+	.on-dark {
+		background: var(--color-v2-accent-deep);
+		color: var(--color-v2-on-dark);
+	}
+
+	.stack-40 {
+		display: flex;
+		flex-direction: column;
+		gap: 40px;
+	}
+
+	.num {
+		flex: none;
+		font-size: 14px;
+		line-height: 24px;
+		font-weight: 500;
+		color: var(--color-v2-muted);
+	}
+
+	.body-l {
+		font-size: 20px;
+		line-height: 32px;
+		letter-spacing: -0.005em;
+		color: var(--color-v2-ink-2);
+	}
+
+	.on-dark .body-l {
+		color: var(--color-v2-on-dark);
+	}
+
+	.accent-serif {
+		font-weight: 600;
+		color: var(--color-v2-accent);
+	}
+
+	/* Header */
+	.cs-header-bar {
+		position: sticky;
+		top: 0;
+		z-index: 50;
+		background: var(--color-v2-bg);
+	}
+
+	.cs-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding-block: 32px;
+	}
+
+	.cs-header :global(.back) {
+		color: var(--color-v2-ink);
+	}
+
+	.logo {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		line-height: 24px;
+		white-space: nowrap;
+	}
+
+	.logo-kicker {
+		font-size: 12px;
+		font-weight: 500;
+		color: var(--color-v2-muted);
+	}
+
+	.logo-name {
+		font-size: 14px;
+		font-weight: 600;
+		color: var(--color-v2-ink);
+	}
+
+	/* Hero */
+	.cs-hero {
+		padding: 40px 0 64px;
+	}
+
+	.cs-hero .wrap {
+		display: flex;
+		flex-direction: column;
+		gap: 32px;
+	}
+
+	.hero-meta {
+		display: flex;
+		justify-content: space-between;
+		font-size: 14px;
+		line-height: 24px;
+		font-weight: 500;
+		color: var(--color-v2-muted);
+	}
+
+	.cs-title {
+		font-size: calc(224 * var(--u));
+		line-height: calc(208 * var(--u));
+		font-weight: 700;
+		letter-spacing: -0.06em;
+		color: var(--color-v2-ink);
+	}
+
+	.cs-title :global(.serif-italic) {
+		font-weight: 400;
+		color: var(--color-v2-accent);
+	}
+
+	.cs-subtitle {
+		margin-top: 8px;
+		font-size: calc(40 * var(--u));
+		line-height: 1.2;
+		font-weight: 500;
+		letter-spacing: -0.025em;
+		color: var(--color-v2-ink-2);
+	}
+
+	.cs-meta {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 24px;
+		margin: 0;
+	}
+
+	.cs-meta > div {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		padding-top: 16px;
+		border-top: 1px solid var(--color-v2-line);
+	}
+
+	.cs-meta dt {
+		font-size: 14px;
+		line-height: 24px;
+		font-weight: 500;
+		color: var(--color-v2-muted);
+	}
+
+	.cs-meta dd {
+		margin: 0;
+		font-size: 16px;
+		line-height: 32px;
+		letter-spacing: -0.002em;
+	}
+
+	.cs-hero :global(.cover) {
+		aspect-ratio: 1344 / 720;
+		border-radius: 28px;
+	}
+
+	/* Overview */
+	.overview {
+		background: var(--color-v2-surface);
+	}
+
+	.statement {
+		font-size: calc(48 * var(--u));
+		line-height: 1.333;
+		font-weight: 500;
+		letter-spacing: -0.025em;
+	}
+
+	.highlights {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 24px;
+	}
+
+	.highlight {
+		display: flex;
+		gap: 16px;
+		padding-block: 24px;
+		border-top: 1px solid var(--color-v2-line);
+		font-size: 20px;
+		line-height: 32px;
+		letter-spacing: -0.005em;
+		color: var(--color-v2-ink-2);
+	}
+
+	.highlight > span:last-child {
+		max-width: 318px;
+	}
+
+	/* Idea */
+	.idea {
+		background: var(--color-v2-surface);
+	}
+
+	.idea .aside :global(.idea-media) {
+		width: calc(324 * var(--u));
+		aspect-ratio: 324 / 480;
+		margin: 71px 0 0 calc(55 * var(--u));
+		border-radius: 20px;
+	}
+
+	.idea-statement {
+		font-size: calc(44 * var(--u));
+		line-height: 1.273;
+		font-weight: 500;
+		letter-spacing: -0.025em;
+	}
+
+	.idea-statement :global(.accent-serif) {
+		font-weight: 700;
+	}
+
+	.points li {
+		display: flex;
+		gap: 24px;
+		padding-block: 16px;
+		border-top: 1px solid var(--color-v2-line);
+		font-size: 20px;
+		line-height: 32px;
+		letter-spacing: -0.005em;
+		color: var(--color-v2-ink-2);
+	}
+
+	.points .num {
+		width: 90px;
+	}
+
+	/* Competitive */
+	.ca-cards {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 24px;
+	}
+
+	.ca-card {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		padding: 32px;
+		border-radius: 24px;
+	}
+
+	.ca-card--solution {
+		background: var(--color-v2-accent-mid);
+	}
+
+	.ca-card--challenge {
+		background: var(--color-v2-accent-deep-2);
+		border: 1px solid var(--color-v2-accent);
+	}
+
+	.ca-label {
+		font-size: 14px;
+		line-height: 24px;
+		font-weight: 500;
+		color: var(--color-v2-on-dark-muted);
+	}
+
+	.ca-card--solution .ca-label {
+		color: var(--color-v2-on-accent-soft);
+	}
+
+	.ca-text {
+		font-size: 22px;
+		line-height: 32px;
+		font-weight: 600;
+		letter-spacing: -0.015em;
+	}
+
+	/* Qualitative */
+	.qual {
+		background: var(--color-v2-surface);
+	}
+
+	.segments {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 24px;
+	}
+
+	.segment {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		padding: 32px;
+		border-radius: 24px;
+		background: var(--color-v2-bg);
+	}
+
+	.segment:last-child {
+		grid-column: 1 / -1;
+	}
+
+	.segment-head {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.segment-kicker {
+		font-size: 14px;
+		line-height: 24px;
+		font-weight: 500;
+		color: var(--color-v2-muted);
+	}
+
+	.segment-name {
+		font-size: 36px;
+		line-height: 40px;
+		font-weight: 600;
+		letter-spacing: -0.03em;
+	}
+
+	.segment-desc {
+		font-size: 16px;
+		line-height: 32px;
+		letter-spacing: -0.002em;
+		color: var(--color-v2-ink-2);
+	}
+
+	.insight {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		margin-top: auto;
+		padding-top: 16px;
+		border-top: 1px solid var(--color-v2-line);
+		font-size: 16px;
+		line-height: 32px;
+		letter-spacing: -0.002em;
+	}
+
+	.insight-label {
+		font-size: 14px;
+		line-height: 24px;
+		font-weight: 500;
+		color: var(--color-v2-accent);
+	}
+
+	/* Quantitative */
+	.hero-stat {
+		display: flex;
+		align-items: flex-end;
+		gap: 24px;
+		padding-bottom: 32px;
+	}
+
+	.big-number {
+		flex: none;
+		width: calc(546 * var(--u));
+		font-size: calc(200 * var(--u));
+		line-height: calc(184 * var(--u));
+		font-weight: 700;
+		letter-spacing: -0.06em;
+		color: var(--color-v2-accent-bright);
+		white-space: nowrap;
+	}
+
+	.hero-stat-caption {
+		max-width: 318px;
+		font-size: 20px;
+		line-height: 32px;
+		letter-spacing: -0.005em;
+	}
+
+	.stats {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 24px;
+	}
+
+	.stat,
+	.spec {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		padding-top: 16px;
+		border-top: 1px solid var(--color-v2-accent);
+	}
+
+	.stat-value {
+		font-size: 40px;
+		line-height: 48px;
+		font-weight: 600;
+		letter-spacing: -0.03em;
+	}
+
+	.stat-label {
+		font-size: 16px;
+		line-height: 32px;
+		letter-spacing: -0.002em;
+		color: var(--color-v2-on-dark-muted);
+	}
+
+	.takeaway {
+		font-size: 24px;
+		line-height: 32px;
+		font-weight: 600;
+		letter-spacing: -0.015em;
+	}
+
+	/* Persona */
+	.persona {
+		background: var(--color-v2-surface);
+	}
+
+	.persona-main {
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+	}
+
+	.identity {
+		display: flex;
+		align-items: center;
+		gap: 24px;
+	}
+
+	.identity :global(.avatar) {
+		flex: none;
+		width: 90px;
+		height: 90px;
+		border-radius: 999px;
+	}
+
+	.persona-name {
+		font-size: 48px;
+		line-height: 56px;
+		font-weight: 600;
+		letter-spacing: -0.03em;
+	}
+
+	.persona-meta {
+		margin-top: 8px;
+		font-size: 16px;
+		line-height: 32px;
+		letter-spacing: -0.002em;
+		color: var(--color-v2-muted);
+	}
+
+	.quote {
+		font-family: var(--font-serif);
+		font-size: 32px;
+		line-height: 48px;
+		font-weight: 600;
+		letter-spacing: -0.02em;
+		color: var(--color-v2-accent);
+	}
+
+	.persona-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 24px;
+		margin-top: 56px;
+	}
+
+	.persona-block-title {
+		font-size: 14px;
+		line-height: 24px;
+		font-weight: 700;
+		color: var(--color-v2-muted);
+	}
+
+	.persona-block li {
+		padding-block: 16px;
+		border-top: 1px solid var(--color-v2-line);
+		font-size: 16px;
+		line-height: 32px;
+		letter-spacing: -0.002em;
+	}
+
+	/* Design System */
+	.ds {
+		background: var(--color-v2-bg);
+	}
+
+	.swatches {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 24px;
+	}
+
+	.swatch {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		gap: 8px;
+		height: 224px;
+		padding: 16px;
+		border-radius: 20px;
+		line-height: 24px;
+		font-weight: 500;
+	}
+
+	.swatch--border {
+		border: 1px solid var(--color-v2-line);
+	}
+
+	.swatch-name {
+		font-size: 18px;
+		font-weight: 600;
+		letter-spacing: -0.015em;
+	}
+
+	.swatch-hex {
+		font-size: 14px;
+	}
+
+	.swatch-role {
+		font-size: 12px;
+	}
+
+	.fonts {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 24px;
+	}
+
+	.font-card {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		padding: 32px;
+		border: 1px solid var(--color-v2-line);
+		border-radius: 24px;
+		background: var(--color-v2-surface);
+	}
+
+	.font-role {
+		font-size: 14px;
+		line-height: 24px;
+		font-weight: 500;
+		color: var(--color-v2-muted);
+	}
+
+	.font-sample {
+		font-size: 112px;
+		line-height: 104px;
+		letter-spacing: -0.06em;
+	}
+
+	.font-name {
+		font-size: 24px;
+		line-height: 32px;
+		letter-spacing: -0.015em;
+	}
+
+	.literata {
+		font-family: var(--font-serif);
+	}
+
+	.bvp {
+		font-family: 'Be Vietnam Pro', sans-serif;
+	}
+
+	.font-desc {
+		font-size: 16px;
+		line-height: 32px;
+		letter-spacing: -0.002em;
+		color: var(--color-v2-muted);
+	}
+
+	.specs {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 24px;
+	}
+
+	.spec {
+		border-top-color: var(--color-v2-line);
+	}
+
+	.spec-value {
+		font-size: 36px;
+		line-height: 40px;
+		font-weight: 600;
+		letter-spacing: -0.03em;
+	}
+
+	.spec-label {
+		font-size: 14px;
+		line-height: 24px;
+		font-weight: 500;
+		color: var(--color-v2-muted);
+	}
+
+	/* User Flow & UI */
+	.user-flow {
+		background: var(--color-v2-surface);
+	}
+
+	.cta-row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 12px 16px;
+	}
+
+	.ui-shots {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 24px;
+		margin-top: 56px;
+	}
+
+	.ui-shots :global(.ui-shot) {
+		aspect-ratio: 432 / 560;
+	}
+
+	/* Footer */
+	.footer {
+		position: relative;
+		overflow: hidden;
+		background: var(--color-v2-accent-deep);
+		color: var(--color-v2-on-dark);
+	}
+
+	.footer-inner {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 56px;
+		padding-block: 120px 40px;
+	}
+
+	.footer-main {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 40px;
+	}
+
+	.footer-statement {
+		font-size: calc(80 * var(--u));
+		line-height: 1;
+		font-weight: 600;
+		letter-spacing: -0.045em;
+		text-align: right;
+	}
+
+	.footer-ctas {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: flex-end;
+		gap: 12px 16px;
+	}
+
+	.copyright {
+		font-size: 14px;
+		line-height: 24px;
+		font-weight: 500;
+		color: var(--color-v2-on-dark-muted);
+	}
+
+	.giant {
+		position: absolute;
+		right: var(--pad);
+		bottom: 64px;
+		font-size: calc(176 * var(--u));
+		line-height: calc(168 * var(--u));
+		font-weight: 700;
+		letter-spacing: -0.06em;
+		color: rgb(244 247 253 / 0.084);
+		white-space: nowrap;
+		pointer-events: none;
+	}
+
+	@media (min-width: 1441px) {
+		.giant {
+			right: calc((100vw - 1440px) / 2 + 48px);
+		}
+	}
+
+	@media (max-width: 900px) {
+		.highlights,
+		.ca-cards,
+		.segments,
+		.persona-grid,
+		.fonts,
+		.ui-shots {
+			grid-template-columns: 1fr;
+		}
+
+		.stats,
+		.swatches,
+		.specs {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		.hero-stat {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+
+		.idea .aside :global(.idea-media) {
+			display: none;
+		}
+
+		.cs-meta {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

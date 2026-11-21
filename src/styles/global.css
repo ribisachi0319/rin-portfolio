@@ -1,0 +1,172 @@
+@import '@fontsource-variable/inter/opsz.css';
+@import '@fontsource-variable/inter/opsz-italic.css';
+@import '@fontsource-variable/literata/opsz.css';
+@import '@fontsource-variable/literata/opsz-italic.css';
+@import '@fontsource/be-vietnam-pro/400.css';
+
+/* Token lấy 1:1 từ collection "Portfolio Tokens" trong Figma */
+:root {
+	--color-brand-blue-deep: #1c3b78;
+	--color-brand-blue-soft: #dce5f4;
+	--color-neutral-ink: #16213b;
+	--color-v2-bg: #eef3fb;
+	--color-v2-surface: #ffffff;
+	--color-v2-ink: #16306a;
+	--color-v2-ink-2: #34508a;
+	--color-v2-muted: #4768b1;
+	--color-v2-line: #d2dcee;
+	--color-v2-placeholder: #d8e3f5;
+	--color-v2-accent: #29529e;
+	--color-v2-accent-mid: #4768b1;
+	--color-v2-accent-deep: #132a5e;
+	--color-v2-accent-deep-2: #1f3d80;
+	--color-v2-accent-bright: #5b8def;
+	--color-v2-on-dark: #f4f7fd;
+	--color-v2-on-dark-muted: #b8caec;
+	--color-v2-on-accent-soft: #eff3fd;
+	--color-v2-ink-darkest: #111829;
+
+	--font-sans: 'Inter Variable', system-ui, sans-serif;
+	--font-serif: 'Literata Variable', Georgia, serif;
+
+	/* 1 "px thiết kế": bằng 1px ở khung 1440, co lại theo màn hẹp hơn */
+	--u: min(1px, 100vw / 1440);
+	--pad: calc(48 * var(--u));
+	--gap: 24px;
+
+	--ease-out: cubic-bezier(0, 0, 0.58, 1);
+	--ease-in-out: cubic-bezier(0.42, 0, 0.58, 1);
+}
+
+@view-transition {
+	navigation: auto;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+	/* Chừa chỗ cho header cố định khi nhảy tới #section */
+	scroll-padding-top: 112px;
+}
+
+body {
+	margin: 0;
+	font-family: var(--font-sans);
+	color: var(--color-v2-ink);
+	background: var(--color-v2-bg);
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+blockquote {
+	margin: 0;
+	padding: 0;
+	font: inherit;
+}
+
+ul,
+ol {
+	list-style: none;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+img {
+	display: block;
+	max-width: 100%;
+}
+
+:focus-visible {
+	outline: 2px solid var(--color-v2-accent-bright);
+	outline-offset: 4px;
+	border-radius: 4px;
+}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+.serif-italic {
+	font-family: var(--font-serif);
+	font-style: italic;
+}
+
+/* Khung nội dung: tối đa 1440, lề 48 */
+.wrap {
+	width: 100%;
+	max-width: 1440px;
+	margin-inline: auto;
+	padding-inline: var(--pad);
+}
+
+/* Lưới 12 cột 90/24 của design: aside 3 cột, main từ cột 5 */
+.split {
+	display: grid;
+	grid-template-columns: repeat(12, minmax(0, 1fr));
+	column-gap: var(--gap);
+	align-items: start;
+}
+
+.split > .aside {
+	grid-column: 1 / 4;
+}
+
+.split > .main {
+	grid-column: 5 / 13;
+}
+
+.aside-label {
+	font-size: 20px;
+	line-height: 24px;
+	font-weight: 700;
+	color: var(--color-v2-muted);
+}
+
+.on-dark .aside-label {
+	color: var(--color-v2-on-dark-muted);
+}
+
+.section {
+	padding-block: 120px;
+}
+
+@media (max-width: 900px) {
+	:root {
+		--pad: 24px;
+	}
+
+	.split > .aside,
+	.split > .main {
+		grid-column: 1 / -1;
+	}
+
+	.split > .aside {
+		margin-bottom: 32px;
+	}
+
+	.section {
+		padding-block: 80px;
+	}
+}

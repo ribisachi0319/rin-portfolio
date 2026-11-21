@@ -1,0 +1,30 @@
+---
+// Khung ảnh placeholder ("v2 / Media"). Thay ảnh thật sau.
+interface Props {
+	label: string;
+	class?: string;
+	[key: string]: unknown;
+}
+
+const { label, class: className, ...rest } = Astro.props;
+---
+
+<div class:list={['media', className]} role="img" aria-label={label} {...rest}>
+	<span aria-hidden="true">{label}</span>
+</div>
+
+<style>
+	.media {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
+		border-radius: 24px;
+		background: var(--color-v2-placeholder);
+		color: var(--color-v2-muted);
+		font-size: 14px;
+		line-height: 24px;
+		font-weight: 500;
+		text-align: center;
+	}
+</style>

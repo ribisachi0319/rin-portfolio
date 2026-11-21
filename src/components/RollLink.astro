@@ -1,0 +1,66 @@
+---
+// Link chữ cuộn lên khi hover/focus (component "v2 / Roll Link")
+interface Props {
+	href: string;
+	label: string;
+	theme?: 'light' | 'dark';
+	external?: boolean;
+	class?: string;
+	[key: string]: unknown;
+}
+
+const { href, label, theme = 'light', external = false, class: className, ...rest } = Astro.props;
+---
+
+<a
+	class:list={['roll-link', `roll-link--${theme}`, className]}
+	href={href}
+	aria-label={label}
+	{...(external && { target: '_blank', rel: 'noopener' })}
+	{...rest}
+>
+	<span class="roll" aria-hidden="true">
+		<span>{label}</span>
+		<span>{label}</span>
+	</span>
+</a>
+
+<style>
+	.roll-link {
+		display: inline-flex;
+		font-size: 16px;
+		line-height: 24px;
+		font-weight: 500;
+		white-space: nowrap;
+		transition: color 0.35s var(--ease-in-out);
+	}
+
+	.roll-link--light {
+		color: var(--color-neutral-ink);
+	}
+
+	.roll-link--light:hover,
+	.roll-link--light:focus-visible {
+		color: var(--color-v2-accent);
+	}
+
+	.roll-link--dark {
+		color: var(--color-v2-on-dark);
+	}
+
+	.roll {
+		display: flex;
+		flex-direction: column;
+		height: 24px;
+		overflow: hidden;
+	}
+
+	.roll > span {
+		transition: transform 0.35s var(--ease-in-out);
+	}
+
+	.roll-link:hover .roll > span,
+	.roll-link:focus-visible .roll > span {
+		transform: translateY(-100%);
+	}
+</style>

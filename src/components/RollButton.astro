@@ -1,0 +1,116 @@
+---
+// Nút viên thuốc: hover → chữ cuộn lên, nền chuyển xanh, mũi tên xoay 45° ("v2 / Roll Button")
+interface Props {
+	href: string;
+	label: string;
+	variant?: 'dark' | 'light' | 'accent';
+	external?: boolean;
+	class?: string;
+	[key: string]: unknown;
+}
+
+const { href, label, variant = 'dark', external = false, class: className, ...rest } = Astro.props;
+---
+
+<a
+	class:list={['roll-btn', `roll-btn--${variant}`, className]}
+	href={href}
+	aria-label={label}
+	{...(external && { target: '_blank', rel: 'noopener' })}
+	{...rest}
+>
+	<span class="roll" aria-hidden="true">
+		<span>{label}</span>
+		<span>{label}</span>
+	</span>
+	<span class="icon" aria-hidden="true">
+		<span class="arrow">↗</span>
+	</span>
+</a>
+
+<style>
+	.roll-btn {
+		--bg: var(--color-v2-accent-deep);
+		--fg: var(--color-v2-on-dark);
+		--icon-bg: var(--color-v2-on-dark);
+		--icon-fg: var(--color-v2-ink);
+		--border: transparent;
+
+		display: inline-flex;
+		align-items: center;
+		gap: 16px;
+		padding: 8px 8px 8px 24px;
+		border: 1px solid var(--border);
+		border-radius: 999px;
+		background: var(--bg);
+		color: var(--fg);
+		font-size: 16px;
+		line-height: 24px;
+		font-weight: 500;
+		white-space: nowrap;
+		transition:
+			background-color 0.4s var(--ease-in-out),
+			border-color 0.4s var(--ease-in-out),
+			color 0.4s var(--ease-in-out);
+	}
+
+	.roll-btn--light {
+		--bg: var(--color-v2-surface);
+		--fg: var(--color-v2-ink);
+		--icon-bg: var(--color-v2-accent-deep);
+		--icon-fg: var(--color-v2-on-dark);
+		--border: var(--color-v2-line);
+	}
+
+	.roll-btn--accent {
+		--bg: var(--color-v2-accent);
+		--icon-fg: var(--color-v2-accent);
+	}
+
+	.roll-btn:hover,
+	.roll-btn:focus-visible {
+		--bg: var(--color-v2-accent);
+		--fg: var(--color-v2-on-dark);
+		--icon-bg: var(--color-v2-on-dark);
+		--icon-fg: var(--color-v2-accent);
+		--border: var(--color-v2-accent);
+	}
+
+	.roll {
+		display: flex;
+		flex-direction: column;
+		height: 24px;
+		overflow: hidden;
+	}
+
+	.roll > span {
+		transition: transform 0.4s var(--ease-in-out);
+	}
+
+	.roll-btn:hover .roll > span,
+	.roll-btn:focus-visible .roll > span {
+		transform: translateY(-100%);
+	}
+
+	.icon {
+		display: grid;
+		place-items: center;
+		width: 40px;
+		height: 40px;
+		border-radius: 999px;
+		background: var(--icon-bg);
+		color: var(--icon-fg);
+		transition:
+			background-color 0.4s var(--ease-in-out),
+			color 0.4s var(--ease-in-out);
+	}
+
+	.arrow {
+		transition: transform 0.4s var(--ease-in-out);
+	}
+
+	.roll-btn:hover .arrow,
+	.roll-btn:focus-visible .arrow {
+		transform: rotate(45deg);
+	}
+</style>

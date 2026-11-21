@@ -1,0 +1,28 @@
+/*
+ * Trạng thái "trước khi xuất hiện". Chỉ áp dụng khi <html> có class motion-ok
+ * (JS đã chạy và người dùng không bật giảm chuyển động), nên không có JS
+ * thì nội dung vẫn hiện đầy đủ.
+ */
+.motion-ok [data-reveal],
+.motion-ok [data-split] .sp {
+	opacity: 0;
+}
+
+.sp {
+	display: inline-block;
+	white-space: pre;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+
+	*,
+	*::before,
+	*::after {
+		transition-duration: 0.01ms !important;
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+	}
+}

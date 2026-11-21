@@ -1,0 +1,808 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Split from '../components/Split.astro';
+import RollLink from '../components/RollLink.astro';
+import RollButton from '../components/RollButton.astro';
+import IndexRow from '../components/IndexRow.astro';
+import Media from '../components/Media.astro';
+import workImage from '../assets/images/work-v-heritage.png';
+import linkedinIcon from '../assets/icons/linkedin.svg?raw';
+import { RESUME_URL, EMAIL, PHONE_DISPLAY, PHONE_TEL, UI_DESIGN_URL } from '../data/links';
+
+const base = import.meta.env.BASE_URL;
+const project = `${base}/v-heritage/`;
+
+const marquee = [
+	"Rin's Portfolio",
+	"Rin's Portfolio",
+	"Rin's Portfolio",
+	"Rin's Portfolio",
+	'Design System',
+	{ serif: 'Figma' },
+	'User Research',
+	'User Flow',
+	{ serif: 'Wireframe' },
+	"Rin's Portfolio",
+	"Rin's Portfolio",
+	"Rin's Portfolio",
+];
+---
+
+<Base
+	title="Thanh Tuyền — UX/UI Designer"
+	description="Portfolio của Thanh Tuyền (Rin), UX/UI Designer: thiết kế trải nghiệm số giàu bản sắc Việt."
+>
+	<header class="site-header">
+		<div class="wrap header-inner" data-reveal="down" data-delay="0">
+			<a class="logo" href={`${base}/`}>
+				<span class="logo-kicker">PORTFOLIO</span>
+				<span class="logo-name">THANH TUYỀN</span>
+			</a>
+			<nav class="nav" aria-label="Điều hướng chính">
+				<RollLink href="#top" label="Home" />
+				<RollLink href={RESUME_URL} label="Resume" external />
+				<RollLink href="#work" label="Work" />
+				<RollLink href="#contact" label="Contact" />
+			</nav>
+		</div>
+	</header>
+
+	<main>
+		<section class="hero" id="top" data-intro="home">
+			<div class="wrap">
+				<h1 class="sr-only">Thanh Tuyền — UX/UI Designer</h1>
+				<div class="name-block" aria-hidden="true">
+					<div class="row1">
+						<div class="swap1">
+							<Split as="span" mode="char" class="name1" delay={0.2}>
+								Thanh
+							</Split>
+							<span class="alt1">UX/UI</span>
+						</div>
+						<div class="flip-scene">
+							<div class="flip-card">
+								<div class="face front">Ảnh chân dung / mockup</div>
+								<div class="face back"></div>
+							</div>
+						</div>
+					</div>
+					<div class="row2">
+						<div class="swap2">
+							<span class="alt2">Designer.</span>
+							<Split as="span" mode="char" class="name2" delay={0.45}>
+								Tuyền<span class="serif-italic">.</span>
+							</Split>
+						</div>
+					</div>
+				</div>
+				<div class="hero-bottom">
+					<Split class="intro" delay={1}>
+						Tôi thiết kế những trải nghiệm số vừa giàu bản sắc Việt, vừa gần gũi với người dùng.
+					</Split>
+					<div data-reveal data-delay="1.3">
+						<RollButton href={RESUME_URL} label="Xem CV" variant="light" external />
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="work" id="work">
+			<div class="wrap">
+				<div class="work-head">
+					<p class="work-kicker" data-reveal="label">
+						Rin’s Portfolio
+					</p>
+					<h2 class="work-title" data-reveal>
+						Work
+					</h2>
+				</div>
+				<a class="work-card" href={project} data-reveal="media">
+					<div class="work-media">
+						<Picture
+							src={workImage}
+							alt="Ứng dụng V-Heritage trên điện thoại"
+							widths={[800, 1400, 2000]}
+							sizes="(max-width: 1440px) 100vw, 1440px"
+							formats={['avif', 'webp']}
+							fallbackFormat="jpg"
+						/>
+						<span class="view-pill" aria-hidden="true">
+							Xem case study ↗
+						</span>
+					</div>
+					<div class="work-meta">
+						<span class="work-name">V-Heritage</span>
+						<span class="work-year">2026</span>
+					</div>
+				</a>
+			</div>
+		</section>
+
+		<section class="about">
+			<div class="wrap split">
+				<div class="aside">
+					<h2 class="aside-label" data-reveal="label">
+						About me
+					</h2>
+				</div>
+				<div class="main">
+					<Split class="about-statement">
+						Tôi thiết kế giao diện kể lại <span class="serif-italic">văn hoá Việt</span> bằng ngôn ngữ hiện đại: đẹp, rõ
+						ràng và dễ dùng cho mọi người.
+					</Split>
+					<div class="about-detail">
+						<Media label="Ảnh chân dung" class="portrait" data-reveal="media" />
+						<div class="about-text" data-reveal>
+							<p class="about-para">
+								Là một người đam mê thiết kế, mình luôn mong muốn được khám phá những ý tưởng mới và hiện thực hoá thành
+								những sản phẩm mang tính thực tiễn, sáng tạo. Với tình yêu dành cho văn hóa Việt Nam, mình đặc biệt quan
+								tâm đến việc kết hợp những giá trị truyền thống với tư duy thiết kế hiện đại.
+							</p>
+							<dl class="facts">
+								<div class="fact">
+									<dt>Học vấn</dt>
+									<dd>Cử nhân Báo chí, Trường ĐH Sư Phạm - ĐH Đà Nẵng (2021-2025)</dd>
+								</div>
+								<div class="fact">
+									<dt>Khoá học</dt>
+									<dd>
+										UI/UX Design Fundamental (2026)
+										<br />
+										UX &amp; Figma Agent Essential (2026)
+									</dd>
+								</div>
+								<div class="fact">
+									<dt>Ngoại ngữ</dt>
+									<dd>Tiếng Anh (B1)</dd>
+								</div>
+							</dl>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<div class="marquee" aria-hidden="true">
+			<div class="marquee-track">
+				{[0, 1].map(() => (
+					<div class="marquee-seq">
+						{marquee.map((item) => (
+							<>
+								{typeof item === 'string' ? <span>{item}</span> : <span class="serif-italic">{item.serif}</span>}
+								<span>✦</span>
+							</>
+						))}
+					</div>
+				))}
+			</div>
+		</div>
+
+		<section class="services">
+			<div class="wrap split">
+				<div class="aside">
+					<h2 class="aside-label" data-reveal="label">
+						Workflow
+					</h2>
+				</div>
+				<div class="main">
+					<IndexRow
+						no="001"
+						title="UX Research"
+						desc="Khảo sát, phỏng vấn, xây dựng persona và tổng hợp insight."
+						href={`${project}#research`}
+					/>
+					<IndexRow
+						no="002"
+						title="User Flow & Wireframe"
+						desc="Xác định luồng thao tác, phác thảo cấu trúc từng màn hình."
+						href={`${project}#user-flow`}
+					/>
+					<IndexRow
+						no="003"
+						title="UI & Design System"
+						desc="Màu sắc, kiểu chữ, lưới và component nhất quán trên Figma."
+						href={`${project}#design-system`}
+					/>
+					<IndexRow
+						no="004"
+						title="Prototype"
+						desc="Kết nối màn hình, mô phỏng trải nghiệm thực tế để kiểm thử."
+						href={UI_DESIGN_URL}
+						external
+					/>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="footer" id="contact">
+		<div class="wrap footer-inner">
+			<div class="footer-main">
+				<Split class="footer-statement">
+					Quý Anh/chị có dự án hoặc vị trí phù hợp?
+					<br />
+					Hãy liên hệ mình nhé!
+				</Split>
+				<div data-reveal>
+					<RollButton href={`mailto:${EMAIL}`} label="Gửi email" variant="accent" />
+				</div>
+			</div>
+			<div class="footer-cols">
+				<nav class="footer-col" aria-label="Trang">
+					<p class="footer-col-label" data-reveal="label">
+						Trang
+					</p>
+					<RollLink href="#top" label="Home" theme="dark" data-reveal />
+					<RollLink href={RESUME_URL} label="Resume" theme="dark" external data-reveal />
+					<RollLink href="#work" label="Work" theme="dark" data-reveal />
+				</nav>
+				<div class="footer-col">
+					<p class="footer-col-label" data-reveal="label">
+						Liên hệ
+					</p>
+					<RollLink href={`mailto:${EMAIL}`} label={EMAIL} theme="dark" data-reveal />
+					<RollLink href={PHONE_TEL} label={PHONE_DISPLAY} theme="dark" data-reveal />
+					{/* TODO: link LinkedIn — chờ Rin cung cấp */}
+					<span class="social" aria-hidden="true" set:html={linkedinIcon} />
+				</div>
+			</div>
+			<p class="copyright" data-reveal>
+				© 2026 Rin
+			</p>
+		</div>
+		<Split as="p" mode="char" class="giant" aria-hidden="true">
+			PORTFOLIO
+		</Split>
+	</footer>
+</Base>
+
+<style>
+	/* Header */
+	.site-header {
+		position: sticky;
+		top: 0;
+		z-index: 50;
+		background: var(--color-brand-blue-soft);
+	}
+
+	.header-inner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding-block: 32px;
+	}
+
+	.logo {
+		display: flex;
+		flex-direction: column;
+		line-height: 24px;
+		white-space: nowrap;
+	}
+
+	.logo-kicker {
+		font-size: 12px;
+		font-weight: 500;
+		color: var(--color-v2-ink);
+	}
+
+	.logo-name {
+		font-size: 20px;
+		font-weight: 600;
+		color: var(--color-neutral-ink);
+	}
+
+	.nav {
+		display: flex;
+		gap: 40px;
+	}
+
+	/* Hero: mọi kích thước tính theo --u để cả khối co giãn đồng bộ */
+	.hero {
+		background: var(--color-v2-accent-deep);
+		color: var(--color-v2-on-dark);
+		padding: 40px 0 56px;
+		overflow: hidden;
+	}
+
+	.name-block {
+		display: flex;
+		flex-direction: column;
+		isolation: isolate;
+		font-weight: 700;
+	}
+
+	.row1 {
+		position: relative;
+		z-index: 2;
+		display: flex;
+		align-items: center;
+		gap: calc(24 * var(--u));
+		margin-bottom: calc(-88 * var(--u));
+	}
+
+	.swap1 {
+		position: relative;
+		flex: none;
+		width: calc(702 * var(--u));
+	}
+
+	.name1,
+	.name2 {
+		display: block;
+		font-size: calc(240 * var(--u));
+		line-height: calc(224 * var(--u));
+		letter-spacing: -0.06em;
+		white-space: nowrap;
+	}
+
+	.alt1 {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: calc(660 * var(--u));
+		font-size: calc(220 * var(--u));
+		line-height: calc(208 * var(--u));
+		letter-spacing: -0.06em;
+		white-space: nowrap;
+	}
+
+	.row2 {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		padding: calc(72 * var(--u)) 0 calc(40 * var(--u));
+	}
+
+	.swap2 {
+		position: relative;
+		flex: 1;
+		display: flex;
+		align-items: center;
+		color: var(--color-v2-accent-bright);
+	}
+
+	.alt2 {
+		flex: none;
+		width: calc(888 * var(--u));
+		font-size: calc(200 * var(--u));
+		line-height: calc(224 * var(--u));
+		letter-spacing: -0.03em;
+		text-align: right;
+		white-space: nowrap;
+	}
+
+	.name2 {
+		position: absolute;
+		top: calc(50% - 112 * var(--u));
+		right: 0;
+		width: calc(774 * var(--u));
+		text-align: right;
+	}
+
+	.name2 :global(.serif-italic) {
+		font-weight: 400;
+	}
+
+	.flip-scene {
+		flex: none;
+		width: calc(318 * var(--u));
+		height: calc(392 * var(--u));
+		perspective: 900px;
+	}
+
+	.flip-card {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		transform-style: preserve-3d;
+	}
+
+	.face {
+		position: absolute;
+		inset: 0;
+		display: grid;
+		place-items: center;
+		border-radius: calc(24 * var(--u));
+		backface-visibility: hidden;
+		font-size: 14px;
+		font-weight: 500;
+	}
+
+	.front {
+		background: var(--color-v2-placeholder);
+		color: var(--color-v2-muted);
+	}
+
+	.back {
+		background: var(--color-v2-accent);
+		transform: rotateY(180deg);
+	}
+
+	/* Trạng thái cuối (mặc định khi không có JS / giảm chuyển động) */
+	.name1,
+	.name2 {
+		opacity: 0;
+	}
+
+	.alt1 {
+		transform: translate(calc(420 * var(--u)), calc(63 * var(--u)));
+	}
+
+	.alt2 {
+		transform: translate(calc(416 * var(--u)), calc(-58 * var(--u)));
+	}
+
+	.flip-scene {
+		transform: translate(calc(-682 * var(--u)), calc(147 * var(--u)));
+	}
+
+	.flip-card {
+		transform: rotateY(180deg);
+	}
+
+	/* Trạng thái đầu, khi chuỗi mở đầu sẽ chạy */
+	:global(.motion-ok) .name1,
+	:global(.motion-ok) .name2 {
+		opacity: 1;
+	}
+
+	:global(.motion-ok) .alt1,
+	:global(.motion-ok) .alt2,
+	:global(.motion-ok) .flip-scene {
+		opacity: 0;
+		transform: none;
+	}
+
+	:global(.motion-ok) .flip-card {
+		transform: none;
+	}
+
+	.hero-bottom {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 16px;
+		margin-top: 32px;
+	}
+
+	.intro {
+		max-width: 546px;
+		font-size: 20px;
+		line-height: 32px;
+		letter-spacing: -0.005em;
+	}
+
+	/* Work */
+	.work {
+		padding-block: 144px;
+	}
+
+	.work-head {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		margin-bottom: 64px;
+	}
+
+	.work-kicker {
+		font-size: 20px;
+		line-height: 24px;
+		font-weight: 500;
+		color: var(--color-v2-muted);
+	}
+
+	.work-title {
+		font-size: calc(96 * var(--u));
+		line-height: 1;
+		font-weight: 600;
+		letter-spacing: -0.045em;
+		color: var(--color-v2-ink);
+	}
+
+	.work-card {
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+	}
+
+	.work-media {
+		position: relative;
+		aspect-ratio: 1344 / 640;
+		overflow: hidden;
+		border-radius: 28px;
+		background: var(--color-v2-placeholder);
+	}
+
+	/* Vị trí và cỡ ảnh lấy đúng theo khung crop trong Figma */
+	.work-media :global(img) {
+		position: absolute;
+		left: -2.902%;
+		top: -48.906%;
+		width: 104.613%;
+		max-width: none;
+		height: auto;
+		transition: transform 0.8s var(--ease-out);
+	}
+
+	.view-pill {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		display: flex;
+		gap: 8px;
+		padding: 8px 16px;
+		border-radius: 999px;
+		background: var(--color-v2-accent-deep);
+		color: var(--color-v2-on-dark);
+		font-size: 12px;
+		line-height: 24px;
+		font-weight: 500;
+		white-space: nowrap;
+		opacity: 0;
+		transform: translate(-50%, -50%) scale(0.9);
+		transition:
+			opacity 0.4s var(--ease-in-out),
+			transform 0.4s var(--ease-in-out);
+	}
+
+	.work-card:hover .view-pill,
+	.work-card:focus-visible .view-pill {
+		opacity: 1;
+		transform: translate(-50%, -50%);
+	}
+
+	.work-card:hover .work-media :global(img),
+	.work-card:focus-visible .work-media :global(img) {
+		transform: scale(1.02);
+	}
+
+	.work-meta {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 24px;
+		font-weight: 600;
+		color: var(--color-v2-ink);
+	}
+
+	.work-name {
+		font-size: 28px;
+		line-height: 40px;
+		letter-spacing: -0.015em;
+	}
+
+	.work-year {
+		font-size: 20px;
+		line-height: 32px;
+		letter-spacing: -0.015em;
+	}
+
+	/* About */
+	.about {
+		padding-block: 144px;
+		background: var(--color-v2-accent-deep);
+		color: var(--color-v2-on-dark);
+	}
+
+	.about .aside-label {
+		color: var(--color-v2-on-dark-muted);
+	}
+
+	.about .main {
+		display: flex;
+		flex-direction: column;
+		gap: 40px;
+	}
+
+	.about-statement {
+		font-size: calc(48 * var(--u));
+		line-height: 1.333;
+		font-weight: 500;
+		letter-spacing: -0.025em;
+	}
+
+	.about-statement :global(.serif-italic) {
+		color: var(--color-v2-accent-bright);
+	}
+
+	.about-detail {
+		display: flex;
+		gap: 24px;
+	}
+
+	.about-detail :global(.portrait) {
+		flex: none;
+		width: 316px;
+		min-height: 484px;
+		border-radius: 20px;
+	}
+
+	.about-text {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 32px;
+	}
+
+	.about-para {
+		font-size: 20px;
+		line-height: 32px;
+		letter-spacing: -0.005em;
+		text-align: justify;
+	}
+
+	.fact {
+		display: flex;
+		gap: 24px;
+		padding-block: 16px;
+		border-top: 1px solid var(--color-v2-accent);
+	}
+
+	.fact dt {
+		flex: none;
+		width: 90px;
+		font-size: 14px;
+		line-height: 24px;
+		font-weight: 500;
+		color: var(--color-v2-on-dark-muted);
+	}
+
+	.fact dd {
+		margin: 0;
+		max-width: 432px;
+		font-size: 16px;
+		line-height: 32px;
+		letter-spacing: -0.002em;
+	}
+
+	/* Marquee */
+	.marquee {
+		overflow: hidden;
+		padding-block: 32px;
+		background: var(--color-brand-blue-deep);
+		color: var(--color-brand-blue-soft);
+	}
+
+	.marquee-track {
+		display: flex;
+		width: max-content;
+		animation: marquee var(--marquee-duration, 40s) linear infinite;
+	}
+
+	.marquee-seq {
+		display: flex;
+		gap: 40px;
+		padding-right: 40px;
+		font-size: 56px;
+		line-height: 64px;
+		font-weight: 600;
+		letter-spacing: -0.03em;
+		white-space: nowrap;
+	}
+
+	.marquee-seq .serif-italic {
+		font-weight: 400;
+		letter-spacing: 0;
+	}
+
+	@keyframes marquee {
+		to {
+			transform: translateX(-50%);
+		}
+	}
+
+	/* Workflow */
+	.services {
+		padding-block: 144px;
+		background: var(--color-brand-blue-soft);
+	}
+
+	.services .aside-label {
+		color: var(--color-brand-blue-deep);
+	}
+
+	/* Footer */
+	.footer {
+		position: relative;
+		overflow: hidden;
+		background: var(--color-v2-accent-deep);
+		color: var(--color-v2-on-dark);
+	}
+
+	.footer-inner {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 72px;
+		padding-block: 144px 40px;
+	}
+
+	.footer-main {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 40px;
+	}
+
+	.footer-statement {
+		font-size: calc(64 * var(--u));
+		line-height: 1;
+		font-weight: 600;
+		letter-spacing: -0.045em;
+		text-align: right;
+	}
+
+	.footer-cols {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 24px;
+	}
+
+	.footer-col {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 16px;
+	}
+
+	.footer-col-label,
+	.copyright {
+		font-size: 14px;
+		line-height: 24px;
+		font-weight: 500;
+		color: var(--color-v2-on-dark-muted);
+	}
+
+	.social {
+		display: block;
+		width: 24px;
+		height: 24px;
+	}
+
+	.giant {
+		position: absolute;
+		right: var(--pad);
+		bottom: 64px;
+		font-size: calc(176 * var(--u));
+		line-height: calc(168 * var(--u));
+		font-weight: 700;
+		letter-spacing: -0.06em;
+		color: rgb(244 247 253 / 0.084);
+		white-space: nowrap;
+		pointer-events: none;
+	}
+
+	@media (min-width: 1441px) {
+		.giant {
+			right: calc((100vw - 1440px) / 2 + 48px);
+		}
+	}
+
+	@media (max-width: 900px) {
+		.header-inner {
+			flex-wrap: wrap;
+			gap: 16px;
+		}
+
+		.nav {
+			gap: 24px;
+		}
+
+		.about-detail {
+			flex-direction: column;
+		}
+
+		.about-detail :global(.portrait) {
+			width: 100%;
+			min-height: 0;
+			aspect-ratio: 316 / 484;
+			max-width: 316px;
+		}
+
+		.footer-cols {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
