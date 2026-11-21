@@ -99,8 +99,8 @@ const marquee = [
 						Work
 					</h2>
 				</div>
-				<a class="work-card" href={project} data-reveal="media">
-					<div class="work-media">
+				<div class="work-card">
+					<a class="work-media" href={project} aria-label="Xem case study V-Heritage" data-reveal="media">
 						<Picture
 							src={workImage}
 							alt="Ứng dụng V-Heritage trên điện thoại"
@@ -112,12 +112,12 @@ const marquee = [
 						<span class="view-pill" aria-hidden="true">
 							Xem case study ↗
 						</span>
-					</div>
-					<div class="work-meta">
+					</a>
+					<div class="work-meta" data-reveal="meta">
 						<span class="work-name">V-Heritage</span>
 						<span class="work-year">2026</span>
 					</div>
-				</a>
+				</div>
 			</div>
 		</section>
 
@@ -601,6 +601,7 @@ const marquee = [
 
 	.work-media {
 		position: relative;
+		display: block;
 		aspect-ratio: 1344 / 640;
 		overflow: hidden;
 		border-radius: 28px;
@@ -639,14 +640,14 @@ const marquee = [
 			transform 0.4s var(--ease-in-out);
 	}
 
-	.work-card:hover .view-pill,
-	.work-card:focus-visible .view-pill {
+	.work-media:hover .view-pill,
+	.work-media:focus-visible .view-pill {
 		opacity: 1;
 		transform: translate(-50%, -50%);
 	}
 
-	.work-card:hover .work-media :global(img),
-	.work-card:focus-visible .work-media :global(img) {
+	.work-media:hover :global(img),
+	.work-media:focus-visible :global(img) {
 		transform: scale(1.02);
 	}
 
