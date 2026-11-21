@@ -78,7 +78,9 @@ const marquee = [
 				</div>
 				<div class="hero-bottom">
 					<Split class="intro" delay={1}>
-						Tôi thiết kế những trải nghiệm số vừa giàu bản sắc Việt, vừa gần gũi với người dùng.
+						Tôi thiết kế những trải nghiệm số vừa giàu bản sắc Việt,
+						<br />
+						vừa gần gũi với người dùng.
 					</Split>
 					<div data-reveal data-delay="1.3">
 						<RollButton href={RESUME_URL} label="Xem CV" variant="light" external />
@@ -388,7 +390,7 @@ const marquee = [
 		flex: none;
 		width: calc(318 * var(--u));
 		height: calc(392 * var(--u));
-		perspective: 900px;
+		perspective: calc(900 * var(--u));
 	}
 
 	.flip-card {
@@ -404,9 +406,11 @@ const marquee = [
 		display: grid;
 		place-items: center;
 		border-radius: calc(24 * var(--u));
+		padding: 16px;
 		backface-visibility: hidden;
 		font-size: 14px;
 		font-weight: 500;
+		text-align: center;
 	}
 
 	.front {
@@ -456,6 +460,95 @@ const marquee = [
 
 	:global(.motion-ok) .flip-card {
 		transform: none;
+	}
+
+	/*
+	 * Hero dưới 1100px: thôi thu nhỏ bản desktop. Chữ và thẻ xếp lại theo lưới,
+	 * thẻ to hơn; khi đổi trạng thái thẻ lật tại chỗ, chữ đổi tại chỗ (xem motion.ts).
+	 * 760–1099: chữ cột trái, thẻ cột phải. Dưới 760: chữ trên, thẻ dưới.
+	 * Cỡ chữ theo bề ngang khối (cqi) sao cho "Designer." vừa cột chữ.
+	 */
+	@media (width < 1100px) {
+		.name-block {
+			--card-w: 34cqi;
+			--name-size: 15.5cqi;
+
+			container-type: inline-size;
+			display: grid;
+			/* cqi không dùng được cho chính khối chứa, nên cột tính bằng % */
+			grid-template-columns: 1fr 34%;
+			grid-template-areas: 't1 card' 't2 card';
+			align-items: end;
+			column-gap: 5%;
+		}
+
+		.row1,
+		.row2 {
+			display: contents;
+		}
+
+		.swap1,
+		.swap2 {
+			display: grid;
+			width: auto;
+		}
+
+		.swap1 {
+			grid-area: t1;
+			z-index: 2;
+		}
+
+		.swap2 {
+			grid-area: t2;
+			align-self: start;
+		}
+
+		.name1,
+		.name2,
+		.alt1,
+		.alt2 {
+			grid-area: 1 / 1;
+			position: static;
+			width: auto;
+			font-size: var(--name-size);
+			line-height: 1;
+			letter-spacing: -0.05em;
+			text-align: left;
+		}
+
+		.alt1,
+		.alt2,
+		.flip-scene {
+			transform: none;
+		}
+
+		.flip-scene {
+			grid-area: card;
+			align-self: center;
+			width: 100%;
+			height: auto;
+			aspect-ratio: 318 / 392;
+			perspective: calc(var(--card-w) * 2.8);
+		}
+
+		.face {
+			border-radius: 20px;
+		}
+	}
+
+	@media (width < 760px) {
+		.name-block {
+			--card-w: 100cqi;
+			--name-size: 25cqi;
+
+			grid-template-columns: 1fr;
+			grid-template-areas: 't1' 't2' 'card';
+		}
+
+		.flip-scene {
+			max-width: 440px;
+			margin-top: 32px;
+		}
 	}
 
 	.hero-bottom {

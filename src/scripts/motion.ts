@@ -65,14 +65,22 @@ function initReveal() {
 	});
 }
 
-// Chuỗi mở đầu của Home: "Thanh Tuyền." + thẻ ảnh → thẻ lật/bay, chữ đổi thành "UX/UI Designer."
-// Chạy một lần khi tải trang. Trạng thái cuối nằm sẵn trong CSS (khi không có JS hoặc giảm chuyển động).
-function initHomeIntro(root: HTMLElement) {
-	const u = root.querySelector<HTMLElement>('.name-block')!.offsetWidth / 1344;
-	const q = <T extends Element = HTMLElement>(s: string) => root.querySelector<T>(s)!;
+// Hero của Home: thẻ bật ra, rồi lặp mãi giữa 2 trạng thái
+// "Thanh Tuyền." + thẻ ảnh  ⇄  "UX/UI [thẻ xanh] Designer.", chạy theo thời gian, không theo cuộn.
+// Chữ chuyển cùng khung thời gian với thẻ và đan chéo ở giữa, nên 2 trạng thái hiện lâu như nhau.
+// Trạng thái "Designer" nằm sẵn trong CSS (khi không có JS / giảm chuyển động).
+const HOLD = 3; // giây đứng yên ở mỗi trạng thái
+const SWAP = 1.6; // giây chuyển cảnh
+const IN_OUT = [0.65, 0, 0.35, 1] as const;
+const SLIDE_IN = [0.5, 1, 0.89, 1] as const; // ease-out nhẹ: đi đều hơn ở đầu, mắt kịp thấy
+const SLIDE_OUT = [0.11, 0, 0.5, 0] as const;
 
-	root.querySelectorAll<HTMLElement>('[data-split], [data-reveal]').forEach((el) => reveal(el, 0));
+// Dưới mốc này hero xếp lại theo lưới (CSS trong index.astro), thẻ lật tại chỗ, chữ đổi tại chỗ
+const WIDE = '(width >= 1100px)';
 
+function initHomeHero(root: HTMLElement) {
+	const q = (s: string) => root.querySelector<HTMLElement>(s)!;
+	const block = q('.name-block');
 	const name1 = q('.name1');
 	const name2 = q('.name2');
 	const alt1 = q('.alt1');
@@ -80,27 +88,126 @@ function initHomeIntro(root: HTMLElement) {
 	const scene = q('.flip-scene');
 	const card = q('.flip-card');
 
+	root.querySelectorAll<HTMLElement>('[data-split], [data-reveal]').forEach((el) => reveal(el, 0));
+
+	// Một vòng: đứng ở "Thanh Tuyền" → chuyển sang "Designer" → đứng → chuyển ngược lại.
+	// Thẻ lật tiếp cùng chiều ở lượt về (180° → 360°). Lượt về là lượt đi tua ngược.
+	const go = HOLD;
+	const back = HOLD * 2 + SWAP;
+	const appear = [0.33, 1, 0.68, 1] as const; // rõ lên sớm
+	const vanish = [0.32, 0, 0.67, 0] as const; // giữ rõ lâu rồi mới mờ
+
+	// Desktop: thẻ bay chéo sang trái, chữ cũ mờ và nhích lên (như Figma) ngay khi thẻ chuyển,
+	// chữ mới hiện và trượt vào từ giữa chừng, dừng đúng lúc thẻ dừng. Hai chữ đan chéo ở giữa.
+	function wideLoop() {
+		const u = block.offsetWidth / 1344;
+		const LEAVE = 1; // giây chữ cũ mờ dần
+		const ENTER = SWAP - 0.6; // giây chữ mới hiện và trượt vào, bắt đầu từ 0.6s
+		const z = 36 * u;
+		return animate(
+			[
+				[card, { rotateY: [0, 180], z: [0, z, 0] }, { duration: SWAP, at: go, ease: IN_OUT }],
+				[scene, { x: [0, -682 * u], y: [0, 147 * u] }, { duration: SWAP, at: go, ease: IN_OUT }],
+				[name1, { opacity: [1, 0] }, { duration: LEAVE, at: go, ease: vanish }],
+				[name1, { y: [0, -32 * u] }, { duration: LEAVE, at: go, ease: SLIDE_OUT }],
+				[name2, { opacity: [1, 0] }, { duration: LEAVE, at: go, ease: vanish }],
+				[name2, { y: [0, -58 * u] }, { duration: LEAVE, at: go, ease: SLIDE_OUT }],
+				[alt1, { opacity: [0, 1] }, { duration: ENTER, at: go + SWAP - ENTER, ease: appear }],
+				[alt1, { x: [198 * u, 420 * u], y: [0, 63 * u] }, { duration: ENTER, at: go + SWAP - ENTER, ease: SLIDE_IN }],
+				[alt2, { opacity: [0, 1] }, { duration: ENTER, at: go + SWAP - ENTER, ease: appear }],
+				[alt2, { x: [198 * u, 416 * u], y: [0, -58 * u] }, { duration: ENTER, at: go + SWAP - ENTER, ease: SLIDE_IN }],
+
+				[card, { rotateY: [180, 360], z: [0, z, 0] }, { duration: SWAP, at: back, ease: IN_OUT }],
+				[scene, { x: [-682 * u, 0], y: [147 * u, 0] }, { duration: SWAP, at: back, ease: IN_OUT }],
+				[alt1, { opacity: [1, 0] }, { duration: ENTER, at: back, ease: vanish }],
+				[alt1, { x: [420 * u, 198 * u], y: [63 * u, 0] }, { duration: ENTER, at: back, ease: SLIDE_OUT }],
+				[alt2, { opacity: [1, 0] }, { duration: ENTER, at: back, ease: vanish }],
+				[alt2, { x: [416 * u, 198 * u], y: [-58 * u, 0] }, { duration: ENTER, at: back, ease: SLIDE_OUT }],
+				[name1, { opacity: [0, 1] }, { duration: LEAVE, at: back + SWAP - LEAVE, ease: appear }],
+				[name1, { y: [-32 * u, 0] }, { duration: LEAVE, at: back + SWAP - LEAVE, ease: SLIDE_IN }],
+				[name2, { opacity: [0, 1] }, { duration: LEAVE, at: back + SWAP - LEAVE, ease: appear }],
+				[name2, { y: [-58 * u, 0] }, { duration: LEAVE, at: back + SWAP - LEAVE, ease: SLIDE_IN }],
+			],
+			{ repeat: Infinity },
+		);
+	}
+
+	// Màn hẹp: chữ cũ và chữ mới chung một chỗ, nên gần như nối tiếp nhau (chỉ chạm nhau 0.1s)
+	// để không bao giờ thấy hai chữ đè lên nhau. Chữ cũ nhích lên rồi mất, chữ mới nhích lên vào chỗ.
+	function compactLoop() {
+		const lift = parseFloat(getComputedStyle(name1).fontSize) * 0.18;
+		const z = scene.offsetWidth * (36 / 318);
+		const OUT = SWAP / 2; // giây chữ cũ đi ra
+		const IN = SWAP / 2 + 0.1; // giây chữ mới đi vào
+		const leave = (els: HTMLElement[], at: number, dir: number) =>
+			els.flatMap((el) => [
+				[el, { opacity: [1, 0] }, { duration: OUT, at, ease: vanish }],
+				[el, { y: [0, -lift * dir] }, { duration: OUT, at, ease: SLIDE_OUT }],
+			]);
+		const enter = (els: HTMLElement[], at: number, dir: number) =>
+			els.flatMap((el) => [
+				[el, { opacity: [0, 1] }, { duration: IN, at, ease: appear }],
+				[el, { y: [lift * dir, 0] }, { duration: IN, at, ease: SLIDE_IN }],
+			]);
+		return animate(
+			[
+				[card, { rotateY: [0, 180], z: [0, z, 0] }, { duration: SWAP, at: go, ease: IN_OUT }],
+				...leave([name1, name2], go, 1),
+				...enter([alt1, alt2], go + SWAP - IN, 1),
+				[card, { rotateY: [180, 360], z: [0, z, 0] }, { duration: SWAP, at: back, ease: IN_OUT }],
+				...leave([alt1, alt2], back, -1),
+				...enter([name1, name2], back + SWAP - IN, -1),
+			] as Parameters<typeof animate>[0],
+			{ repeat: Infinity },
+		);
+	}
+
+	const wide = matchMedia(WIDE);
+	const build = () => {
+		const l = wide.matches ? wideLoop() : compactLoop();
+		l.pause();
+		return l;
+	};
+	let loop = build();
+
+	// Vòng lặp chỉ chạy khi hero đang trong màn hình và tab đang mở, cho đỡ tốn pin
+	let started = false;
+	let visible = true;
+	const sync = () => {
+		if (started && visible && !document.hidden) loop.play();
+		else loop.pause();
+	};
+	new IntersectionObserver(([entry]) => {
+		visible = entry.isIntersecting;
+		sync();
+	}).observe(root);
+	document.addEventListener('visibilitychange', sync);
+
+	// Đổi bề ngang thì số đo cũ sai (và có thể đổi bố cục): bỏ vòng cũ, về trạng thái đầu, dựng lại
+	let lastWidth = block.offsetWidth;
+	let timer = 0;
+	new ResizeObserver(() => {
+		if (block.offsetWidth === lastWidth) return;
+		lastWidth = block.offsetWidth;
+		clearTimeout(timer);
+		timer = window.setTimeout(() => {
+			loop.stop();
+			// Motion nhớ x/y/z của từng phần tử, phải đặt lại qua Motion chứ không chỉ xoá style
+			const still = { duration: 0 };
+			animate([name1, name2], { opacity: 1, x: 0, y: 0 }, still);
+			animate([alt1, alt2], { opacity: 0, x: 0, y: 0 }, still);
+			animate(scene, { x: 0, y: 0 }, still);
+			animate(card, { rotateY: 0, z: 0 }, still);
+			loop = build();
+			sync();
+		}, 200);
+	}).observe(block);
+
 	animate(scene, { opacity: [0, 1] }, { duration: 0.4, delay: 0.7, ease: EASE_OUT });
 	animate(scene, { rotate: [18, 0], scale: [0.5, 1] }, { duration: 0.8, delay: 0.7, ease: [0.45, 1.45, 0.8, 1] }).then(
 		() => {
-			const t = 1.7; // nghỉ một nhịp rồi chuyển cảnh
-			animate(name1, { opacity: 0, y: -32 * u }, { duration: 0.3, delay: t, ease: [0.7, 0, 0.84, 0] });
-			animate(name2, { opacity: 0, y: -58 * u }, { duration: 0.3, delay: t + 0.05, ease: [0.7, 0, 0.84, 0] });
-			animate(card, { rotateY: [0, 180] }, { duration: 1.2, delay: t, ease: [0.65, 0, 0.35, 1] });
-			animate(card, { z: [0, 36, 0] }, { duration: 1.2, delay: t, ease: 'easeInOut' });
-			animate(scene, { x: -682 * u, y: 147 * u }, { duration: 1.6, delay: t, ease: [0.65, 0, 0.35, 1] });
-			animate(alt1, { opacity: [0, 1] }, { duration: 0.4, delay: t + 0.25, ease: EASE_OUT });
-			animate(
-				alt1,
-				{ x: [198 * u, 420 * u], y: [0, 63 * u] },
-				{ duration: 1.35, delay: t + 0.25, ease: [0.65, 0, 0.35, 1] },
-			);
-			animate(alt2, { opacity: [0, 1] }, { duration: 0.4, delay: t + 0.35, ease: EASE_OUT });
-			animate(
-				alt2,
-				{ x: [198 * u, 416 * u], y: [0, -58 * u] },
-				{ duration: 1.25, delay: t + 0.35, ease: [0.65, 0, 0.35, 1] },
-			);
+			started = true;
+			sync();
 		},
 	);
 }
@@ -114,7 +221,7 @@ function initMarquee() {
 
 initMarquee();
 if (document.documentElement.classList.contains('motion-ok')) {
-	const intro = document.querySelector<HTMLElement>('[data-intro="home"]');
-	if (intro) initHomeIntro(intro);
+	const hero = document.querySelector<HTMLElement>('[data-intro="home"]');
+	if (hero) initHomeHero(hero);
 	initReveal();
 }
