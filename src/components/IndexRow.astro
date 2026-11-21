@@ -18,29 +18,29 @@ const { no, title, desc, href, tone = 'light', external = false } = Astro.props;
 	data-reveal
 	{...(external && { target: '_blank', rel: 'noopener' })}
 >
-	<span class="no">{no}</span>
-	<span class="title">{title}</span>
-	<span class="desc">{desc}</span>
-	<span class="arrow" aria-hidden="true">
-		↗
+	<span class="row">
+		<span class="no">{no}</span>
+		<span class="title">{title}</span>
+		<span class="desc">{desc}</span>
+		<span class="arrow" aria-hidden="true">
+			↗
+		</span>
 	</span>
 </a>
 
 <style>
+	/* Bố cục hàng đổi theo độ rộng của chính nó (container query), không theo màn hình */
 	.index-row {
 		--fg: var(--color-brand-blue-deep);
 		--fg-muted: var(--color-brand-blue-deep);
 
 		position: relative;
-		display: flex;
-		align-items: center;
-		gap: 24px;
-		padding: 32px 0;
+		display: block;
+		container-type: inline-size;
 		border-top: 1px solid var(--color-v2-accent);
 		color: var(--fg);
-		isolation: isolate;
 		transition:
-			padding 0.4s var(--ease-in-out),
+			border-color 0.4s var(--ease-in-out),
 			color 0.4s var(--ease-in-out);
 	}
 
@@ -49,8 +49,18 @@ const { no, title, desc, href, tone = 'light', external = false } = Astro.props;
 		--fg-muted: var(--color-v2-on-dark-muted);
 	}
 
-	/* Nền hover: phủ cả viền trên để viền không lộ ra ở góc bo */
-	.index-row::before {
+	.row {
+		position: relative;
+		isolation: isolate;
+		display: flex;
+		align-items: center;
+		gap: 24px;
+		padding: 32px 0;
+		transition: padding 0.4s var(--ease-in-out);
+	}
+
+	/* Nền hover phủ cả chỗ viền trên */
+	.row::before {
 		content: '';
 		position: absolute;
 		inset: -1px 0 0;
@@ -68,11 +78,23 @@ const { no, title, desc, href, tone = 'light', external = false } = Astro.props;
 	.index-row:focus-visible {
 		--fg: var(--color-v2-on-dark);
 		--fg-muted: var(--color-v2-on-dark-muted);
+	}
+
+	.index-row:hover .row,
+	.index-row:focus-visible .row {
 		padding-inline: 32px;
 	}
 
-	.index-row:hover::before,
-	.index-row:focus-visible::before {
+	/* Khi hover, ẩn cả vạch trên của dòng này lẫn vạch của dòng ngay dưới */
+	.index-row:hover,
+	.index-row:focus-visible,
+	.index-row:hover + .index-row,
+	.index-row:focus-visible + .index-row {
+		border-top-color: transparent;
+	}
+
+	.index-row:hover .row::before,
+	.index-row:focus-visible .row::before {
 		opacity: 1;
 		transform: none;
 	}
@@ -86,13 +108,24 @@ const { no, title, desc, href, tone = 'light', external = false } = Astro.props;
 		color: var(--fg-muted);
 	}
 
+	/*
+	 * Chừa sẵn 64px bên phải tiêu đề. Khi hover, khoảng này nhường cho padding 32px hai bên,
+	 * nên tiêu đề luôn rộng như nhau và không bị xuống dòng khác đi.
+	 */
 	.title {
 		flex: 1 1 0;
 		min-width: 0;
+		margin-right: 64px;
 		font-size: 40px;
 		line-height: 48px;
 		font-weight: 600;
 		letter-spacing: -0.03em;
+		transition: margin-right 0.4s var(--ease-in-out);
+	}
+
+	.index-row:hover .title,
+	.index-row:focus-visible .title {
+		margin-right: 0;
 	}
 
 	.index-row--dark .title {
@@ -126,18 +159,39 @@ const { no, title, desc, href, tone = 'light', external = false } = Astro.props;
 		transition: color 0.4s var(--ease-in-out);
 	}
 
-	@media (max-width: 900px) {
-		.index-row {
+	/* Hàng hẹp hơn thiết kế (laptop 1280–1366): thu cột số và cột mô tả */
+	@container (max-width: 860px) {
+		.no {
+			width: 56px;
+		}
+
+		.desc {
+			width: 280px;
+		}
+	}
+
+	/* Hàng hẹp: số và tiêu đề ở trên, mô tả xuống dưới; chữ đứng yên khi hover, nền tràn ra lề */
+	@container (max-width: 640px) {
+		/* Chừa lề phải cho mũi tên, để tiêu đề dài không đè lên nó */
+		.row {
 			flex-wrap: wrap;
 			gap: 8px 16px;
+			padding-right: 48px;
+		}
+
+		.index-row:hover .row,
+		.index-row:focus-visible .row {
+			padding-inline: 0 48px;
 		}
 
 		.no {
 			width: auto;
 		}
 
-		.title {
-			flex-basis: calc(100% - 80px);
+		.title,
+		.index-row:hover .title,
+		.index-row:focus-visible .title {
+			margin-right: 0;
 			font-size: 28px;
 			line-height: 36px;
 		}
@@ -156,9 +210,8 @@ const { no, title, desc, href, tone = 'light', external = false } = Astro.props;
 			right: 0;
 		}
 
-		.index-row:hover .arrow,
-		.index-row:focus-visible .arrow {
-			right: 32px;
+		.row::before {
+			inset: -1px -16px 0;
 		}
 	}
 </style>
