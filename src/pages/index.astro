@@ -13,20 +13,8 @@ import { RESUME_URL, EMAIL, PHONE_DISPLAY, PHONE_TEL, UI_DESIGN_URL } from '../d
 const base = import.meta.env.BASE_URL;
 const project = `${base}/v-heritage/`;
 
-const marquee = [
-	"Rin's Portfolio",
-	"Rin's Portfolio",
-	"Rin's Portfolio",
-	"Rin's Portfolio",
-	'Design System',
-	{ serif: 'Figma' },
-	'User Research',
-	'User Flow',
-	{ serif: 'Wireframe' },
-	"Rin's Portfolio",
-	"Rin's Portfolio",
-	"Rin's Portfolio",
-];
+// Như khung nhìn thấy trong Figma: chỉ một cụm lặp lại
+const marquee = Array.from({ length: 12 }, () => "Rin's Portfolio");
 ---
 
 <Base
@@ -109,9 +97,6 @@ const marquee = [
 							formats={['avif', 'webp']}
 							fallbackFormat="jpg"
 						/>
-						<span class="view-pill" aria-hidden="true">
-							Xem case study ↗
-						</span>
 					</a>
 					<div class="work-meta" data-reveal="meta">
 						<span class="work-name">V-Heritage</span>
@@ -171,7 +156,7 @@ const marquee = [
 					<div class="marquee-seq">
 						{marquee.map((item) => (
 							<>
-								{typeof item === 'string' ? <span>{item}</span> : <span class="serif-italic">{item.serif}</span>}
+								<span>{item}</span>
 								<span>✦</span>
 							</>
 						))}
@@ -619,33 +604,6 @@ const marquee = [
 		transition: transform 0.8s var(--ease-out);
 	}
 
-	.view-pill {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		display: flex;
-		gap: 8px;
-		padding: 8px 16px;
-		border-radius: 999px;
-		background: var(--color-v2-accent-deep);
-		color: var(--color-v2-on-dark);
-		font-size: 12px;
-		line-height: 24px;
-		font-weight: 500;
-		white-space: nowrap;
-		opacity: 0;
-		transform: translate(-50%, -50%) scale(0.9);
-		transition:
-			opacity 0.4s var(--ease-in-out),
-			transform 0.4s var(--ease-in-out);
-	}
-
-	.work-media:hover .view-pill,
-	.work-media:focus-visible .view-pill {
-		opacity: 1;
-		transform: translate(-50%, -50%);
-	}
-
 	.work-media:hover :global(img),
 	.work-media:focus-visible :global(img) {
 		transform: scale(1.02);
@@ -776,11 +734,6 @@ const marquee = [
 		font-weight: 600;
 		letter-spacing: -0.03em;
 		white-space: nowrap;
-	}
-
-	.marquee-seq .serif-italic {
-		font-weight: 400;
-		letter-spacing: 0;
 	}
 
 	@keyframes marquee {
