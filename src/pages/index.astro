@@ -665,9 +665,12 @@ const marquee = [
 	}
 
 	.marquee-track {
+		/* Giá trị mặc định; motion.ts tính lại theo độ dài chữ để tốc độ ~175px/giây */
+		--marquee-duration: 40s;
+
 		display: flex;
 		width: max-content;
-		animation: marquee var(--marquee-duration, 40s) linear infinite;
+		animation: marquee var(--marquee-duration) linear infinite;
 	}
 
 	.marquee-seq {
