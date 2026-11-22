@@ -5,10 +5,13 @@ import Split from '../components/Split.astro';
 import RollLink from '../components/RollLink.astro';
 import RollButton from '../components/RollButton.astro';
 import IndexRow from '../components/IndexRow.astro';
-import Media from '../components/Media.astro';
-import workImage from '../assets/images/work-v-heritage.png';
+import workImage from '../assets/images/work-v-heritage.jpg';
+import portraitCard from '../assets/images/portrait-card.jpg';
+import mockupCard from '../assets/images/mockup-card.jpg';
+import portraitAbout from '../assets/images/portrait-about.jpg';
 import linkedinIcon from '../assets/icons/linkedin.svg?raw';
-import { RESUME_URL, EMAIL, PHONE_DISPLAY, PHONE_TEL, UI_DESIGN_URL } from '../data/links';
+import { RESUME_URL, EMAIL, PHONE_DISPLAY, PHONE_TEL, UI_DESIGN_URL, LINKEDIN_URL } from '../data/links';
+import { IMAGE_FORMATS } from '../data/images';
 
 const base = import.meta.env.BASE_URL;
 const project = `${base}/v-heritage/`;
@@ -50,8 +53,29 @@ const marquee = Array.from({ length: 12 }, () => "Rin's Portfolio");
 						</div>
 						<div class="flip-scene">
 							<div class="flip-card">
-								<div class="face front">Ảnh chân dung / mockup</div>
-								<div class="face back"></div>
+								<div class="face front">
+									<Picture
+										src={portraitCard}
+										alt=""
+										widths={[440, 880]}
+										sizes="(width < 760px) 440px, (width < 1100px) 34vw, 320px"
+										loading="eager"
+										fetchpriority="high"
+										formats={IMAGE_FORMATS}
+										fallbackFormat="jpg"
+									/>
+								</div>
+								<div class="face back">
+									<Picture
+										src={mockupCard}
+										alt=""
+										widths={[440, 880]}
+										sizes="(width < 760px) 440px, (width < 1100px) 34vw, 320px"
+										loading="eager"
+										formats={IMAGE_FORMATS}
+										fallbackFormat="jpg"
+									/>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -80,9 +104,6 @@ const marquee = Array.from({ length: 12 }, () => "Rin's Portfolio");
 		<section class="work" id="work">
 			<div class="wrap">
 				<div class="work-head">
-					<p class="work-kicker" data-reveal="label">
-						Rin’s Portfolio
-					</p>
 					<h2 class="work-title" data-reveal>
 						Work
 					</h2>
@@ -94,7 +115,7 @@ const marquee = Array.from({ length: 12 }, () => "Rin's Portfolio");
 							alt="Ứng dụng V-Heritage trên điện thoại"
 							widths={[800, 1400, 2000]}
 							sizes="(max-width: 1440px) 100vw, 1440px"
-							formats={['avif', 'webp']}
+							formats={IMAGE_FORMATS}
 							fallbackFormat="jpg"
 						/>
 					</a>
@@ -119,7 +140,16 @@ const marquee = Array.from({ length: 12 }, () => "Rin's Portfolio");
 						ràng và dễ dùng cho mọi người.
 					</Split>
 					<div class="about-detail">
-						<Media label="Ảnh chân dung" class="portrait" data-reveal="media" />
+						<div class="portrait" data-reveal="media">
+							<Picture
+								src={portraitAbout}
+								alt="Ảnh đại diện của Rin"
+								widths={[316, 632]}
+								sizes="316px"
+								formats={IMAGE_FORMATS}
+								fallbackFormat="jpg"
+							/>
+						</div>
 						<div class="about-text" data-reveal>
 							<p class="about-para">
 								Là một người đam mê thiết kế, mình luôn mong muốn được khám phá những ý tưởng mới và hiện thực hoá thành
@@ -207,7 +237,7 @@ const marquee = Array.from({ length: 12 }, () => "Rin's Portfolio");
 		<div class="wrap footer-inner">
 			<div class="footer-main">
 				<Split class="footer-statement">
-					Quý Anh/chị có dự án hoặc vị trí phù hợp?
+					Bạn có dự án hoặc vị trí phù hợp?
 					<br />
 					Hãy liên hệ mình nhé!
 				</Split>
@@ -220,23 +250,37 @@ const marquee = Array.from({ length: 12 }, () => "Rin's Portfolio");
 					<p class="footer-col-label" data-reveal="label">
 						Trang
 					</p>
-					<RollLink href="#top" label="Home" theme="dark" data-reveal />
-					<RollLink href={RESUME_URL} label="Resume" theme="dark" external data-reveal />
-					<RollLink href="#work" label="Work" theme="dark" data-reveal />
+					<a class="footer-link" href="#top">
+						Home
+					</a>
+					<a class="footer-link" href={RESUME_URL} target="_blank" rel="noopener">
+						Resume
+					</a>
+					<a class="footer-link" href="#work">
+						Work
+					</a>
 				</nav>
 				<div class="footer-col">
 					<p class="footer-col-label" data-reveal="label">
 						Liên hệ
 					</p>
-					<RollLink href={`mailto:${EMAIL}`} label={EMAIL} theme="dark" data-reveal />
-					<RollLink href={PHONE_TEL} label={PHONE_DISPLAY} theme="dark" data-reveal />
-					{/* TODO: link LinkedIn — chờ Rin cung cấp */}
-					<span class="social" aria-hidden="true" set:html={linkedinIcon} />
+					<a class="footer-link" href={`mailto:${EMAIL}`}>
+						{EMAIL}
+					</a>
+					<a class="footer-link" href={PHONE_TEL}>
+						{PHONE_DISPLAY}
+					</a>
+					<a
+						class="social"
+						href={LINKEDIN_URL}
+						target="_blank"
+						rel="noopener"
+						aria-label="LinkedIn"
+						set:html={linkedinIcon}
+					/>
 				</div>
 			</div>
-			<p class="copyright" data-reveal>
-				© 2026 Rin
-			</p>
+			<p class="copyright">© 2026 Rin</p>
 		</div>
 		<Split as="p" mode="char" class="giant" aria-hidden="true">
 			PORTFOLIO
@@ -355,7 +399,6 @@ const marquee = Array.from({ length: 12 }, () => "Rin's Portfolio");
 		font-size: calc(200 * var(--u));
 		line-height: calc(224 * var(--u));
 		letter-spacing: -0.03em;
-		text-align: right;
 		white-space: nowrap;
 	}
 
@@ -388,19 +431,31 @@ const marquee = Array.from({ length: 12 }, () => "Rin's Portfolio");
 	.face {
 		position: absolute;
 		inset: 0;
-		display: grid;
-		place-items: center;
+		overflow: hidden;
 		border-radius: calc(24 * var(--u));
-		padding: 16px;
 		backface-visibility: hidden;
-		font-size: 14px;
-		font-weight: 500;
-		text-align: center;
+	}
+
+	.face :global(img),
+	.portrait :global(img) {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 	}
 
 	.front {
 		background: var(--color-v2-placeholder);
-		color: var(--color-v2-muted);
+	}
+
+	.front :global(img) {
+		object-position: 50% 25%;
+	}
+
+	/* Điện thoại nằm ở nửa dưới ảnh mockup */
+	.back :global(img) {
+		object-position: 50% 80%;
 	}
 
 	.back {
@@ -419,7 +474,7 @@ const marquee = Array.from({ length: 12 }, () => "Rin's Portfolio");
 	}
 
 	.alt2 {
-		transform: translate(calc(416 * var(--u)), calc(-58 * var(--u)));
+		transform: translate(calc(420 * var(--u)), calc(-58 * var(--u)));
 	}
 
 	.flip-scene {
@@ -448,11 +503,11 @@ const marquee = Array.from({ length: 12 }, () => "Rin's Portfolio");
 	}
 
 	/*
-	 * Hero dưới 1100px: thôi thu nhỏ bản desktop. Chữ và thẻ xếp lại theo lưới,
-	 * thẻ to hơn; khi đổi trạng thái thẻ lật tại chỗ, chữ đổi tại chỗ (xem motion.ts).
-	 * 760–1099: chữ cột trái, thẻ cột phải. Dưới 760: chữ trên, thẻ dưới.
-	 * Cỡ chữ theo bề ngang khối (cqi) sao cho "Designer." vừa cột chữ.
-	 */
+		 * Hero dưới 1100px: thôi thu nhỏ bản desktop. Chữ và thẻ xếp lại theo lưới,
+		 * thẻ to hơn; khi đổi trạng thái thẻ lật tại chỗ, chữ đổi tại chỗ (xem motion.ts).
+		 * 760–1099: chữ cột trái, thẻ cột phải. Dưới 760: chữ trên, thẻ dưới.
+		 * Cỡ chữ theo bề ngang khối (cqi) sao cho "Designer." vừa cột chữ.
+		 */
 	@media (width < 1100px) {
 		.name-block {
 			--card-w: 34cqi;
@@ -563,13 +618,6 @@ const marquee = Array.from({ length: 12 }, () => "Rin's Portfolio");
 		margin-bottom: 64px;
 	}
 
-	.work-kicker {
-		font-size: 20px;
-		line-height: 24px;
-		font-weight: 500;
-		color: var(--color-v2-muted);
-	}
-
 	.work-title {
 		font-size: calc(96 * var(--u));
 		line-height: 1;
@@ -664,6 +712,8 @@ const marquee = Array.from({ length: 12 }, () => "Rin's Portfolio");
 	}
 
 	.about-detail :global(.portrait) {
+		position: relative;
+		overflow: hidden;
 		flex: none;
 		width: 316px;
 		min-height: 484px;
@@ -803,6 +853,14 @@ const marquee = Array.from({ length: 12 }, () => "Rin's Portfolio");
 		line-height: 24px;
 		font-weight: 500;
 		color: var(--color-v2-on-dark-muted);
+	}
+
+	/* Link footer đứng yên, không hiệu ứng (giống dòng email ở footer V-Heritage) */
+	.footer-link {
+		font-size: 16px;
+		line-height: 24px;
+		font-weight: 500;
+		color: var(--color-v2-on-dark);
 	}
 
 	.social {

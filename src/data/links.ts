@@ -5,3 +5,4 @@ export const PHONE_DISPLAY = '(+84) 967 655 846';
 export const PHONE_TEL = 'tel:+84967655846';
 export const USER_FLOW_URL = 'https://kana-rin.github.io/sitemap/';
 export const UI_DESIGN_URL = 'https://www.figma.com/design/zBD9k7k41ctfueKsrTnOqV/V-Heritage--Tuyen-Thanh?node-id=0-1';
+export const LINKEDIN_URL = 'https://www.linkedin.com/in/rinkana/';

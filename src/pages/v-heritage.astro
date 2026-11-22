@@ -7,7 +7,11 @@ import RollButton from '../components/RollButton.astro';
 import IndexRow from '../components/IndexRow.astro';
 import Media from '../components/Media.astro';
 import coverImage from '../assets/images/cover-v-heritage.jpg';
+import quantImage from '../assets/images/mockup-quant.jpg';
+import arrowLeftIcon from '../assets/icons/arrow-left.svg?raw';
+import arrowRightIcon from '../assets/icons/arrow-right.svg?raw';
 import { EMAIL, USER_FLOW_URL, UI_DESIGN_URL } from '../data/links';
+import { IMAGE_FORMATS } from '../data/images';
 
 const base = import.meta.env.BASE_URL;
 const home = `${base}/`;
@@ -72,9 +76,9 @@ const personaBlocks = [
 		title: 'Mục tiêu & mong muốn',
 		items: [
 			'Thông tin đúng và đủ hơn giao diện bóng bẩy',
-			'Hiểu câu chuyện và ý nghĩa của hiện vật',
-			'Quét nhanh để ra thông tin ngay',
 			'Giá dễ tiếp cận, có bản miễn phí',
+			'Quét nhanh để ra thông tin ngay',
+			'Hiểu câu chuyện và ý nghĩa của hiện vật',
 		],
 	},
 	{
@@ -82,8 +86,8 @@ const personaBlocks = [
 		items: [
 			'Phải rời mắt khỏi hiện vật để tra Google',
 			'Bỏ qua hiện vật vì không hiểu',
-			'Rào cản ngôn ngữ khi tham quan',
 			'Lo phục dựng AR không chính xác',
+			'Rào cản ngôn ngữ khi tham quan',
 		],
 	},
 	{
@@ -91,8 +95,8 @@ const personaBlocks = [
 		items: [
 			'Tìm hiểu qua Google và MXH trước chuyến đi',
 			'Chưa dùng app hỗ trợ tham quan',
-			'Sẵn sàng dùng app thuyết minh xuyên suốt',
 			'Ưu tiên nội dung hơn tính năng',
+			'Sẵn sàng dùng app thuyết minh xuyên suốt',
 		],
 	},
 ];
@@ -121,7 +125,7 @@ const gridSpecs = [
 >
 	<header class="cs-header-bar">
 		<div class="wrap cs-header" data-reveal="down" data-delay="0">
-			<RollLink href={home} label="← Trang chủ" class="back" />
+			<RollLink href={home} label="Trang chủ" icon={arrowLeftIcon} class="back" />
 			<a class="logo" href={home}>
 				<span class="logo-kicker">PORTFOLIO</span>
 				<span class="logo-name">THANH TUYỀN</span>
@@ -132,13 +136,15 @@ const gridSpecs = [
 	<main>
 		<section class="cs-hero">
 			<div class="wrap">
-				<div class="hero-meta" data-reveal="meta" data-delay="0.1">
-					<span>Study Project</span>
-					<span>07/2026 - 10/2026</span>
+				<div class="title-row">
+					<Split as="h1" mode="char" class="cs-title" delay={0.2}>
+						V-Heritage<span class="serif-italic">.</span>
+					</Split>
+					<div class="hero-meta" data-reveal="meta" data-delay="0.1">
+						<span class="hero-meta-type">Study Project</span>
+						<span>07/2026 - 10/2026</span>
+					</div>
 				</div>
-				<Split as="h1" mode="char" class="cs-title" delay={0.2}>
-					V-Heritage<span class="serif-italic">.</span>
-				</Split>
 				<Split class="cs-subtitle" delay={0.8}>
 					Ứng dụng tham quan bảo tàng và di tích lịch sử tích hợp công nghệ AR.
 				</Split>
@@ -159,10 +165,10 @@ const gridSpecs = [
 				<div class="cover" data-reveal="media" data-delay="1.3">
 					<Picture
 						src={coverImage}
-						alt="Ứng dụng V-Heritage trên điện thoại, đặt trên nền xanh"
+						alt="Ứng dụng V-Heritage trên điện thoại, cầm trước áo hoa xanh"
 						widths={[800, 1400, 2000]}
 						sizes="(max-width: 1440px) 100vw, 1344px"
-						formats={['avif', 'webp']}
+						formats={IMAGE_FORMATS}
 						loading="eager"
 					/>
 				</div>
@@ -295,6 +301,16 @@ const gridSpecs = [
 		</section>
 
 		<section class="section quant on-dark" id="research-quant">
+			<div class="quant-bg" aria-hidden="true">
+				<Picture
+					src={quantImage}
+					alt=""
+					widths={[800, 1600, 2400]}
+					sizes="100vw"
+					formats={IMAGE_FORMATS}
+					fallbackFormat="jpg"
+				/>
+			</div>
 			<div class="wrap split">
 				<div class="aside">
 					<h2 class="aside-label" data-reveal="label">
@@ -322,7 +338,8 @@ const gridSpecs = [
 						))}
 					</ul>
 					<p class="takeaway" data-reveal="label">
-						→ AR 3D là tính năng cốt lõi, kết hợp audio kể chuyện và gamification để giữ chân người dùng.
+						<span class="inline-icon" aria-hidden="true" set:html={arrowRightIcon} />
+						AR 3D là tính năng cốt lõi, kết hợp audio kể chuyện và gamification để giữ chân người dùng.
 					</p>
 				</div>
 			</div>
@@ -397,9 +414,13 @@ const gridSpecs = [
 							<p class="font-sample literata" aria-hidden="true">
 								Aa
 							</p>
-							<p class="font-name literata">Literata</p>
+							<p class="font-name literata">
+								<a class="font-link" href="https://fonts.google.com/specimen/Literata" target="_blank" rel="noopener">
+									Literata
+								</a>
+							</p>
 							<p class="font-desc">
-								Phông có chân, từ “literatus” nghĩa là người uyên bác. Cổ điển như trang sách lịch sử.
+								Cổ điển như trang sách lịch sử. Tên gọi xuất phát từ “literatus” nghĩa là “uyên bác”.
 							</p>
 						</div>
 						<div class="font-card" data-reveal>
@@ -407,7 +428,16 @@ const gridSpecs = [
 							<p class="font-sample bvp" aria-hidden="true">
 								Aa
 							</p>
-							<p class="font-name bvp">Be Vietnam Pro</p>
+							<p class="font-name bvp">
+								<a
+									class="font-link"
+									href="https://fonts.google.com/specimen/Be+Vietnam+Pro?preview.script=Latn"
+									target="_blank"
+									rel="noopener"
+								>
+									Be Vietnam Pro
+								</a>
+							</p>
 							<p class="font-desc">Thiết kế riêng cho tiếng Việt với dấu chuẩn xác, dễ đọc ở cỡ lớn.</p>
 						</div>
 					</div>
@@ -428,8 +458,8 @@ const gridSpecs = [
 				<div class="split">
 					<div class="aside">
 						<h2 class="aside-label" data-reveal="label">
-							05 · 08 · 09 |<br />
-							User Flow · UI Design · Prototype
+							05 · 06 · 08 · 09 |<br />
+							User Flow · Wireframe · UI Design · Prototype
 						</h2>
 					</div>
 					<div class="main stack-40">
@@ -464,16 +494,16 @@ const gridSpecs = [
 				<Split class="footer-statement">Quay lại trang chủ?</Split>
 				<div class="footer-ctas">
 					<div data-reveal>
-						<RollLink href={`mailto:${EMAIL}`} label={EMAIL} theme="dark" />
+						<a class="footer-email" href={`mailto:${EMAIL}`}>
+							{EMAIL}
+						</a>
 					</div>
 					<div data-reveal>
 						<RollButton href={home} label="Về trang chủ" variant="accent" />
 					</div>
 				</div>
 			</div>
-			<p class="copyright" data-reveal>
-				© 2026 Rin
-			</p>
+			<p class="copyright">© 2026 Rin</p>
 		</div>
 		<Split as="p" mode="char" class="giant" aria-hidden="true">
 			PORTFOLIO
@@ -567,13 +597,35 @@ const gridSpecs = [
 		gap: 32px;
 	}
 
+	/* Tiêu đề bên trái, nhãn dự án xếp chồng bên phải, ngang chân chữ */
+	.title-row {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-end;
+		justify-content: space-between;
+		gap: 16px 24px;
+	}
+
 	.hero-meta {
 		display: flex;
-		justify-content: space-between;
+		flex-direction: column;
+		align-items: flex-end;
 		font-size: 14px;
 		line-height: 24px;
 		font-weight: 500;
 		color: var(--color-v2-muted);
+	}
+
+	.hero-meta-type {
+		font-size: 20px;
+		font-weight: 700;
+	}
+
+	/* Khi nhãn dự án bị đẩy xuống dưới tiêu đề thì căn trái theo tiêu đề */
+	@media (width < 760px) {
+		.hero-meta {
+			align-items: flex-start;
+		}
 	}
 
 	.cs-title {
@@ -639,7 +691,6 @@ const gridSpecs = [
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		object-position: 50% 75%;
 	}
 
 	/* Overview */
@@ -852,8 +903,13 @@ const gridSpecs = [
 		line-height: calc(184 * var(--u));
 		font-weight: 700;
 		letter-spacing: -0.06em;
-		color: var(--color-v2-accent-bright);
+		color: var(--color-v2-placeholder);
 		white-space: nowrap;
+	}
+
+	/* Tách từng ký tự để animate thì mất kerning, nên bù tay cặp "7," và ",6" (dấu phẩy là ký tự thứ 3) */
+	.big-number :global(.sp:nth-child(3)) {
+		margin-inline: -0.125em -0.03em;
 	}
 
 	.hero-stat-caption {
@@ -890,6 +946,50 @@ const gridSpecs = [
 		line-height: 32px;
 		letter-spacing: -0.002em;
 		color: var(--color-v2-on-dark-muted);
+	}
+
+	/* Nền ảnh mockup làm mờ, phủ navy để chữ trắng vẫn đọc rõ */
+	.quant {
+		position: relative;
+		isolation: isolate;
+		overflow: hidden;
+	}
+
+	.quant-bg {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+	}
+
+	.quant-bg :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.quant-bg::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: var(--color-v2-accent-deep);
+		opacity: 0.7;
+	}
+
+	.inline-icon {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		vertical-align: -0.125em;
+	}
+
+	.inline-icon :global(svg) {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.takeaway .inline-icon {
+		margin-right: 0.25em;
 	}
 
 	.takeaway {
@@ -931,7 +1031,7 @@ const gridSpecs = [
 	}
 
 	.persona-meta {
-		margin-top: 8px;
+		margin-top: 4px;
 		font-size: 16px;
 		line-height: 32px;
 		letter-spacing: -0.002em;
@@ -961,9 +1061,12 @@ const gridSpecs = [
 		color: var(--color-v2-muted);
 	}
 
-	.persona-block li {
-		padding-block: 16px;
+	.persona-block ul {
+		padding-top: 16px;
 		border-top: 1px solid var(--color-v2-line);
+	}
+
+	.persona-block li {
 		font-size: 16px;
 		line-height: 32px;
 		letter-spacing: -0.002em;
@@ -1053,6 +1156,15 @@ const gridSpecs = [
 		font-family: 'Be Vietnam Pro', sans-serif;
 	}
 
+	.font-link {
+		transition: color 0.35s var(--ease-in-out);
+	}
+
+	.font-link:hover,
+	.font-link:focus-visible {
+		color: var(--color-v2-accent);
+	}
+
 	.font-desc {
 		font-size: 16px;
 		line-height: 32px;
@@ -1136,6 +1248,13 @@ const gridSpecs = [
 		font-weight: 600;
 		letter-spacing: -0.045em;
 		text-align: right;
+	}
+
+	.footer-email {
+		font-size: 16px;
+		line-height: 24px;
+		font-weight: 500;
+		color: var(--color-v2-on-dark);
 	}
 
 	.footer-ctas {

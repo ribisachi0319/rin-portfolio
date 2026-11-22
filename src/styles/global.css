@@ -57,6 +57,8 @@ html {
 body {
 	margin: 0;
 	font-family: var(--font-sans);
+	/* Inter và Literata trong Figma không có trục opsz: giữ bản chữ thường ở mọi cỡ cho khớp thiết kế */
+	font-optical-sizing: none;
 	color: var(--color-v2-ink);
 	background: var(--color-v2-bg);
 	-webkit-font-smoothing: antialiased;

@@ -5,11 +5,13 @@ interface Props {
 	label: string;
 	theme?: 'light' | 'dark';
 	external?: boolean;
+	/** SVG thô của icon đứng trước chữ (không cuộn) */
+	icon?: string;
 	class?: string;
 	[key: string]: unknown;
 }
 
-const { href, label, theme = 'light', external = false, class: className, ...rest } = Astro.props;
+const { href, label, theme = 'light', external = false, icon, class: className, ...rest } = Astro.props;
 ---
 
 <a
@@ -19,6 +21,7 @@ const { href, label, theme = 'light', external = false, class: className, ...res
 	{...(external && { target: '_blank', rel: 'noopener' })}
 	{...rest}
 >
+	{icon && <span class="icon" aria-hidden="true" set:html={icon} />}
 	<span class="roll" aria-hidden="true">
 		<span>{label}</span>
 		<span>{label}</span>
@@ -28,6 +31,8 @@ const { href, label, theme = 'light', external = false, class: className, ...res
 <style>
 	.roll-link {
 		display: inline-flex;
+		align-items: center;
+		gap: 8px;
 		font-size: 16px;
 		line-height: 24px;
 		font-weight: 500;
@@ -46,6 +51,17 @@ const { href, label, theme = 'light', external = false, class: className, ...res
 
 	.roll-link--dark {
 		color: var(--color-v2-on-dark);
+	}
+
+	.icon {
+		width: 20px;
+		height: 20px;
+	}
+
+	.icon :global(svg) {
+		display: block;
+		width: 100%;
+		height: 100%;
 	}
 
 	.roll {
