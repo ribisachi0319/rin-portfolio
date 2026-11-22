@@ -280,12 +280,12 @@ const marquee = Array.from({ length: 12 }, () => "Rin's Portfolio");
 						set:html={linkedinIcon}
 					/>
 				</div>
+				<Split as="p" mode="char" class="giant" aria-hidden="true">
+					PORTFOLIO
+				</Split>
 			</div>
 			<p class="copyright">© 2026 Rin</p>
 		</div>
-		<Split as="p" mode="char" class="giant" aria-hidden="true">
-			PORTFOLIO
-		</Split>
 	</footer>
 </Base>
 
@@ -836,6 +836,7 @@ const marquee = Array.from({ length: 12 }, () => "Rin's Portfolio");
 	}
 
 	.footer-cols {
+		position: relative;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		gap: 24px;
@@ -870,10 +871,12 @@ const marquee = Array.from({ length: 12 }, () => "Rin's Portfolio");
 		height: 24px;
 	}
 
+	/* Bám theo mép trên khối cột như Figma (thấp hơn 24px), nằm sau các link */
 	.giant {
 		position: absolute;
-		right: var(--pad);
-		bottom: 64px;
+		top: calc(24 * var(--u));
+		right: 0;
+		z-index: -1;
 		font-size: calc(176 * var(--u));
 		line-height: calc(168 * var(--u));
 		font-weight: 700;
@@ -881,12 +884,6 @@ const marquee = Array.from({ length: 12 }, () => "Rin's Portfolio");
 		color: rgb(244 247 253 / 0.084);
 		white-space: nowrap;
 		pointer-events: none;
-	}
-
-	@media (min-width: 1441px) {
-		.giant {
-			right: calc((100vw - 1440px) / 2 + 48px);
-		}
 	}
 
 	@media (max-width: 900px) {
