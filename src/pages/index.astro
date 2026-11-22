@@ -119,10 +119,11 @@ const marquee = Array.from({ length: 12 }, () => "Rin's Portfolio");
 							fallbackFormat="jpg"
 						/>
 					</a>
-					<div class="work-meta" data-reveal="meta">
+					<!-- Link trùng với ảnh nên bỏ khỏi thứ tự Tab; hover dòng chữ không làm ảnh zoom -->
+					<a class="work-meta" href={project} tabindex="-1" aria-hidden="true" data-reveal="meta">
 						<span class="work-name">V-Heritage</span>
 						<span class="work-year">2026</span>
-					</div>
+					</a>
 				</div>
 			</div>
 		</section>
