@@ -1,7 +1,7 @@
 # Rin's Portfolio
 
 Portfolio của Thanh Tuyền (Rin), dựng bằng [Astro](https://astro.build) từ thiết kế Figma.
-Bản chạy thật: https://ribisachi0319.github.io/rin-portfolio/
+https://ribisachi0319.github.io/rin-portfolio/
 
 ## Lệnh
 
