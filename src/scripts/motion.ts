@@ -214,8 +214,8 @@ function initHomeHero(root: HTMLElement) {
 
 function initMarquee() {
 	document.querySelectorAll<HTMLElement>('.marquee-track').forEach((track) => {
-		// Tốc độ như Figma: ~175px/giây, nửa track là một vòng
-		track.style.setProperty('--marquee-duration', `${track.scrollWidth / 2 / 175}s`);
+		// ~90px/giây (Figma là 175, chậm lại cho dễ đọc), nửa track là một vòng
+		track.style.setProperty('--marquee-duration', `${track.scrollWidth / 2 / 90}s`);
 	});
 }
 
