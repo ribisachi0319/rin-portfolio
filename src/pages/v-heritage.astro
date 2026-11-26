@@ -643,7 +643,7 @@ const gridSpecs = [
 
 	.cs-subtitle {
 		margin-top: 8px;
-		font-size: calc(40 * var(--u));
+		font-size: max(18px, calc(40 * var(--u)));
 		line-height: 1.2;
 		font-weight: 500;
 		letter-spacing: -0.025em;
@@ -699,7 +699,7 @@ const gridSpecs = [
 	}
 
 	.statement {
-		font-size: calc(48 * var(--u));
+		font-size: max(24px, calc(48 * var(--u)));
 		line-height: 1.333;
 		font-weight: 500;
 		letter-spacing: -0.025em;
@@ -739,7 +739,7 @@ const gridSpecs = [
 	}
 
 	.idea-statement {
-		font-size: calc(44 * var(--u));
+		font-size: max(22px, calc(44 * var(--u)));
 		line-height: 1.273;
 		font-weight: 500;
 		letter-spacing: -0.025em;
@@ -1243,7 +1243,7 @@ const gridSpecs = [
 	}
 
 	.footer-statement {
-		font-size: calc(80 * var(--u));
+		font-size: max(32px, calc(80 * var(--u)));
 		line-height: 1;
 		font-weight: 600;
 		letter-spacing: -0.045em;
@@ -1320,6 +1320,28 @@ const gridSpecs = [
 
 		.cs-meta {
 			grid-template-columns: 1fr;
+		}
+
+		/* Ngắt dòng của desktop làm rớt một chữ lẻ xuống dòng riêng ở cột hẹp */
+		.idea-statement :global(br) {
+			display: none;
+		}
+
+		/* Cột số 90px của desktop bóp nội dung còn một nửa */
+		.points .num {
+			flex: none;
+			width: 32px;
+		}
+
+		.footer-statement {
+			line-height: 1.15;
+		}
+	}
+
+	/* Header dính trên đầu: thu gọn để không chiếm nhiều màn hình điện thoại */
+	@media (width < 760px) {
+		.cs-header {
+			padding-block: 16px;
 		}
 	}
 </style>
